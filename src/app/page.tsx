@@ -19,7 +19,7 @@ export default function Home() {
     <div className="flex flex-col min-h-[100dvh]">
       <section className="relative w-full h-[60vh] md:h-[70vh]">
         <Image
-          src="/LOGO.png"
+          src="/phonepoint.png"
           alt="Phone Point hero image"
           fill
           className="object-cover"

@@ -37,11 +37,11 @@ export default function Home() {
           <p className="mt-4 max-w-2xl text-lg text-primary/80 md:text-xl">
             Discover certified refurbished phones that look and feel like new. All at a fraction of the cost.
           </p>
-          <div className="mt-8 flex gap-4">
-            <Button asChild size="lg" className="text-lg py-6 px-8">
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 w-full max-w-md sm:max-w-none px-4 sm:px-0">
+            <Button asChild size="lg" className="text-lg py-6 px-8 flex-1 sm:flex-initial">
               <Link href="/phones">Browse All Phones</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="text-lg py-6 px-8 border-primary/50 text-primary hover:bg-primary/10 hover:text-primary">
+            <Button asChild size="lg" variant="outline" className="text-lg py-6 px-8 border-primary/50 text-primary hover:bg-primary/10 hover:text-primary flex-1 sm:flex-initial">
               <Link href="/deals">View Top Deals</Link>
             </Button>
           </div>

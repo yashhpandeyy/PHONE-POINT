@@ -21,7 +21,6 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        {/* Mobile Menu */}
         <div className="flex items-center md:hidden">
            <Sheet>
             <SheetTrigger asChild>
@@ -49,8 +48,7 @@ export function Header() {
           </Sheet>
         </div>
 
-        {/* Desktop Logo & Nav */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-6 mr-auto">
           <Logo />
           <nav className="items-center gap-6 text-sm flex">
             {navLinks.map((link) => (
@@ -65,14 +63,11 @@ export function Header() {
           </nav>
         </div>
 
-        {/* Mobile Logo */}
-        <div className="flex-1 flex justify-center md:hidden">
+        <div className="md:hidden flex-1 flex justify-center">
            <Logo />
         </div>
 
-
-        {/* Search & Actions */}
-        <div className="flex flex-1 items-center justify-end gap-2 sm:gap-4">
+        <div className="flex items-center justify-end gap-2 sm:gap-4 ml-auto">
           <div className="relative hidden sm:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input

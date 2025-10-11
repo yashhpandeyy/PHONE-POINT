@@ -21,7 +21,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center md:hidden w-1/5">
            <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="mr-2">
@@ -67,7 +67,7 @@ export function Header() {
            <Logo />
         </div>
 
-        <div className="flex items-center justify-end gap-2 sm:gap-4">
+        <div className="flex items-center justify-end gap-2 sm:gap-4 w-1/5">
           <div className="relative hidden sm:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -76,12 +76,22 @@ export function Header() {
               className="w-40 sm:w-64 pl-10 h-9"
             />
           </div>
-          <Button asChild variant="ghost" size="icon">
-            <Link href="/account"><User className="h-5 w-5" /><span className="sr-only">Account</span></Link>
-          </Button>
-          <Button asChild variant="ghost" size="icon">
-            <Link href="/cart"><ShoppingCart className="h-5 w-5" /><span className="sr-only">Cart</span></Link>
-          </Button>
+          <div className="flex md:hidden items-center justify-end w-full">
+            <Button asChild variant="ghost" size="icon">
+              <Link href="/account"><User className="h-5 w-5" /><span className="sr-only">Account</span></Link>
+            </Button>
+            <Button asChild variant="ghost" size="icon">
+              <Link href="/cart"><ShoppingCart className="h-5 w-5" /><span className="sr-only">Cart</span></Link>
+            </Button>
+          </div>
+          <div className="hidden md:flex items-center justify-end gap-2 sm:gap-4">
+            <Button asChild variant="ghost" size="icon">
+              <Link href="/account"><User className="h-5 w-5" /><span className="sr-only">Account</span></Link>
+            </Button>
+            <Button asChild variant="ghost" size="icon">
+              <Link href="/cart"><ShoppingCart className="h-5 w-5" /><span className="sr-only">Cart</span></Link>
+            </Button>
+          </div>
         </div>
       </div>
     </header>

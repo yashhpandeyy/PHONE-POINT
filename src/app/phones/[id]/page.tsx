@@ -36,6 +36,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
                   src={image.imageUrl}
                   alt={phone.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                   data-ai-hint={image.imageHint}
                 />

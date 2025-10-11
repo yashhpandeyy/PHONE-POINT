@@ -57,14 +57,20 @@ export default function WelcomePage() {
     >
       <div className="absolute inset-0 bg-black/30" />
       <div className="relative z-10 p-8 flex flex-col items-center gap-4">
-        {isInstallable && (
-          <Button onClick={handleInstallClick} size="lg" variant="outline">
-            Install App
+        {isInstallable ? (
+          <>
+            <Button onClick={handleInstallClick} size="lg">
+              Install App
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link href="/home">Enter Store</Link>
+            </Button>
+          </>
+        ) : (
+          <Button asChild size="lg">
+            <Link href="/home">Enter Store</Link>
           </Button>
         )}
-        <Button asChild size="lg">
-          <Link href="/home">Enter Store</Link>
-        </Button>
       </div>
     </div>
   );

@@ -43,6 +43,13 @@ export function ProductCard({ phone }: ProductCardProps) {
       imageHint: 'google pixel',
       description: 'Google Pixel 6a'
     };
+  } else if (phone.id === 'iphone-13') {
+    image = {
+      id: 'iphone-13-display-local',
+      imageUrl: '/second.jpg',
+      imageHint: 'iphone black',
+      description: 'iPhone 13'
+    };
   }
   else {
     // Fallback to the first image from placeholder data for other phones

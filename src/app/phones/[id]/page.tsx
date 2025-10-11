@@ -63,6 +63,10 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
     phoneImages = [
       { id: 'pixel-6a-display', imageUrl: '/forthp.jpg', imageHint: 'google pixel', description: 'Google Pixel 6a' },
     ];
+  } else if (phone.id === 'iphone-13') {
+    phoneImages = [
+      { id: 'iphone-13-display', imageUrl: '/second.jpg', imageHint: 'iphone black', description: 'iPhone 13' },
+    ];
   }
   else {
       phoneImages = phone.images

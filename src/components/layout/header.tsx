@@ -16,7 +16,6 @@ export function Header() {
   const navLinks = [
     { href: "/phones", label: "All Phones" },
     { href: "/deals", label: "Deals" },
-    { href: "/#recommend", label: "AI Recommender" },
   ];
 
   return (

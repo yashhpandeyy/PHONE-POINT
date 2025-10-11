@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { phones } from "@/lib/data";
 import { ProductCard } from "@/components/product-card";
-import { HelpMeChoose } from "@/components/help-me-choose";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { ArrowRight } from "lucide-react";
 
@@ -62,12 +61,6 @@ export default function Home() {
               <ProductCard key={phone.id} phone={phone} />
             ))}
           </div>
-        </div>
-      </section>
-
-      <section id="recommend" className="py-16 md:py-24 bg-card">
-        <div className="container">
-          <HelpMeChoose />
         </div>
       </section>
 

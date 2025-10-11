@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
-import { MobileBottomNav } from '@/components/layout/mobile-bottom-nav';
+import { AppLayout } from '@/components/layout/app-layout';
 
 export const metadata: Metadata = {
   title: 'Phone Point | Premium Refurbished Phones',
@@ -24,12 +22,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className={cn('font-body bg-background antialiased')}>
-        <div className="relative flex min-h-screen flex-col pb-16 md:pb-0">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <MobileBottomNav />
+        <AppLayout>
+          {children}
+        </AppLayout>
         <Toaster />
       </body>
     </html>

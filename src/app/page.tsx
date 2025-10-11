@@ -9,7 +9,6 @@ import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   const featuredPhones = phones.slice(0, 4);
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-image');
   const brands = [
     { name: "Apple", logoId: "apple-logo" },
     { name: "Samsung", logoId: "samsung-logo" },
@@ -19,16 +18,13 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <section className="relative w-full h-[60vh] md:h-[70vh]">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            data-ai-hint={heroImage.imageHint}
-            priority
-          />
-        )}
+        <Image
+          src="/hero-image.jpeg"
+          alt="Phone Point hero image"
+          fill
+          className="object-cover"
+          priority
+        />
       </section>
 
       <section className="py-16 md:py-24 bg-background">

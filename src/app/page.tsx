@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
@@ -18,7 +19,7 @@ export default function Home() {
     <div className="flex flex-col min-h-[100dvh]">
       <section className="relative w-full h-[60vh] md:h-[70vh]">
         <Image
-          src="/phonepoint.png"
+          src="/LOGO.png"
           alt="Phone Point hero image"
           fill
           className="object-cover"
@@ -58,12 +59,12 @@ export default function Home() {
             {brands.map(brand => (
                 <Link href={`/phones?brand=${brand.name}`} key={brand.name}>
                   <Card className="bg-card hover:bg-accent/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 h-full">
-                    <CardContent className="p-8 flex justify-center items-center h-32 relative">
+                    <CardContent className="p-8 flex justify-center items-center h-24 relative">
                        <Image
                         src={brand.logo}
                         alt={`${brand.name} logo`}
                         fill
-                        className="object-contain p-4"
+                        className="object-contain p-6"
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
                     </CardContent>

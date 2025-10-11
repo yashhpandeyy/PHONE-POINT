@@ -51,19 +51,13 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
         { id: 'samsung-s23-ultra-side', imageUrl: '/samsung2.jpg', imageHint: 'samsung phone side', description: 'Samsung Galaxy S23 Ultra Side' },
         { id: 'samsung-s23-ultra-third', imageUrl: '/samsung3.jpg', imageHint: 'samsung phone back', description: 'Samsung Galaxy S23 Ultra Back' },
         { id: 'samsung-s23-ultra-fourth', imageUrl: '/samsung4.jpg', imageHint: 'samsung phone another', description: 'Samsung Galaxy S23 Ultra Another View' },
-        ...phone.images
-          .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
-          .filter(Boolean) as PhoneImage[]
     ];
   } else if (phone.id === 'google-pixel-7-pro') {
     phoneImages = [
-      { id: 'pixel-7-pro-display', imageUrl: '/pixle2.jpg', imageHint: 'google pixel', description: 'Google Pixel 7 Pro' },
+      { id: 'pixel-7-pro-display', imageUrl: '/pixel2.jpg', imageHint: 'google pixel', description: 'Google Pixel 7 Pro' },
       { id: 'pixel-7-pro-second', imageUrl: '/pixel1.jpg', imageHint: 'google pixel side', description: 'Google Pixel 7 Pro Side' },
       { id: 'pixel-7-pro-third', imageUrl: '/pixel3.jpg', imageHint: 'google pixel back', description: 'Google Pixel 7 Pro Back' },
       { id: 'pixel-7-pro-fourth', imageUrl: '/pixel4.jpg', imageHint: 'google pixel another', description: 'Google Pixel 7 Pro Another View' },
-      ...phone.images
-          .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
-          .filter(Boolean) as PhoneImage[]
     ];
   }
   else {

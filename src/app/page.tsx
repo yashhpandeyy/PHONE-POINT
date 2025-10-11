@@ -44,6 +44,17 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
+      <section className="relative w-full h-[60vh] md:h-[70vh]">
+        <Image
+          src="/phonepoint.png"
+          alt="Phone Point hero image"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+      </section>
+
       <section className="py-16 md:py-24">
         <div className="container text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">

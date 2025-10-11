@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
-import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Phone Point | Premium Refurbished Phones',
@@ -24,13 +23,6 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className={cn('font-body bg-background antialiased')}>
-        <Image
-          src="/phonepoint.png"
-          alt="Background"
-          fill
-          className="object-cover z-[-1] opacity-5"
-          quality={80}
-        />
         <div className="relative flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>

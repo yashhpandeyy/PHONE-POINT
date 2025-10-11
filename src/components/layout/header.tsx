@@ -21,7 +21,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        {/* Mobile Menu & Logo */}
+        {/* Mobile Menu */}
         <div className="flex items-center md:hidden">
            <Sheet>
             <SheetTrigger asChild>
@@ -47,13 +47,10 @@ export function Header() {
               </nav>
             </SheetContent>
           </Sheet>
-          <div className="md:hidden">
-            <Logo />
-          </div>
         </div>
 
         {/* Desktop Logo & Nav */}
-        <div className="hidden md:flex md:flex-1 items-center gap-6">
+        <div className="hidden md:flex items-center gap-6">
           <Logo />
           <nav className="items-center gap-6 text-sm flex">
             {navLinks.map((link) => (
@@ -67,6 +64,12 @@ export function Header() {
             ))}
           </nav>
         </div>
+
+        {/* Mobile Logo */}
+        <div className="flex-1 flex justify-center md:hidden">
+           <Logo />
+        </div>
+
 
         {/* Search & Actions */}
         <div className="flex flex-1 items-center justify-end gap-2 sm:gap-4">

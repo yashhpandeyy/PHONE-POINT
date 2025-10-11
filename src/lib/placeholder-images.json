@@ -1,6 +1,12 @@
 {
   "placeholderImages": [
     {
+      "id": "iphone-14-pro-display",
+      "description": "iPhone 14 Pro main display image",
+      "imageUrl": "https://images.unsplash.com/photo-1664478546384-15415554484c?w=800&q=80",
+      "imageHint": "iphone front"
+    },
+    {
       "id": "iphone-14-pro-purple",
       "description": "iPhone 14 Pro in Deep Purple",
       "imageUrl": "https://images.unsplash.com/photo-1678659523778-685b37e95b9d?w=800&q=80",

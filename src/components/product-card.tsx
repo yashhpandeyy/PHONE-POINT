@@ -12,7 +12,27 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ phone }: ProductCardProps) {
-  const image = PlaceHolderImages.find((p) => p.id === phone.images[0]);
+  let image = PlaceHolderImages.find((p) => p.id === phone.images[0]);
+
+  // Handle the specific case for iPhone 14 Pro to use 'first.jpg'
+  if (phone.id === 'iphone-14-pro') {
+    image = {
+      id: 'iphone-14-pro-display',
+      imageUrl: '/first.jpg',
+      imageHint: 'iphone front',
+      description: 'iPhone 14 Pro'
+    };
+  }
+  
+  if (!image) {
+      image = {
+        id: 'default-placeholder',
+        imageUrl: '/phonepoint.png', // A generic fallback image
+        imageHint: 'phone',
+        description: 'Placeholder Image'
+      }
+  }
+
 
   return (
     <Card className="w-full overflow-hidden flex flex-col group border-2 border-card hover:border-primary/50 transition-all duration-300">
@@ -41,8 +61,8 @@ export function ProductCard({ phone }: ProductCardProps) {
         </CardContent>
         <CardFooter className="p-4 pt-0 flex justify-between items-center">
           <div>
-            <p className="text-xl font-bold text-primary">${phone.price}</p>
-            <p className="text-xs text-muted-foreground line-through">${phone.originalPrice}</p>
+            <p className="text-xl font-bold text-primary">${Number(phone.price)}</p>
+            <p className="text-xs text-muted-foreground line-through">${Number(phone.originalPrice)}</p>
           </div>
           <Button variant="outline" className="border-accent hover:bg-accent hover:text-accent-foreground">View</Button>
         </CardFooter>

@@ -111,25 +111,25 @@
     {
       "id": "hero-image",
       "description": "Sabse Sasta Matlab? Phone Point",
-      "imageUrl": "/hero-image.jpeg",
+      "imageUrl": "/hero-image.png",
       "imageHint": "phone point logo"
     },
     {
       "id": "apple-logo",
       "description": "Apple logo",
-      "imageUrl": "https://picsum.photos/seed/applelogo/200/200",
+      "imageUrl": "https://images.unsplash.com/photo-1599503385689-53f606e30899?w=200&q=80",
       "imageHint": "apple logo"
     },
     {
       "id": "samsung-logo",
       "description": "Samsung logo",
-      "imageUrl": "https://picsum.photos/seed/samsunglogo/200/200",
+      "imageUrl": "https://images.unsplash.com/photo-1620712943543-959959a0a4c2?w=200&q=80",
       "imageHint": "samsung logo"
     },
     {
       "id": "google-logo",
       "description": "Google logo",
-      "imageUrl": "https://picsum.photos/seed/googlelogo/200/200",
+      "imageUrl": "https://images.unsplash.com/photo-1588665809827-013a4a15a81a?w=200&q=80",
       "imageHint": "google logo"
     }
   ]

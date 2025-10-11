@@ -63,11 +63,11 @@ export function Header() {
           </nav>
         </div>
 
-        <div className="md:hidden flex-1 flex justify-center">
+        <div className="flex-1 flex justify-center md:hidden">
            <Logo />
         </div>
 
-        <div className="flex items-center justify-end gap-2 sm:gap-4 ml-auto">
+        <div className="flex items-center justify-end gap-2 sm:gap-4">
           <div className="relative hidden sm:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input

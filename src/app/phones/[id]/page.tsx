@@ -1,9 +1,9 @@
+
 "use client";
 
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { phones } from "@/lib/data";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -20,16 +20,28 @@ import { ShoppingCart, ShieldCheck, Star } from "lucide-react";
 import React from "react";
 import { cn } from "@/lib/utils";
 
+// Hardcoded images for simplicity
+const hardcodedImages = [
+  { id: 'img1', imageUrl: '/iphone-14-pro.jpg', description: 'iPhone 14 Pro front', imageHint: 'iphone front' },
+  { id: 'img2', imageUrl: '/iphone-14-pro-2.jpg', description: 'iPhone 14 Pro back', imageHint: 'iphone purple' },
+  { id: 'img3', imageUrl: '/iphone-14-pro-3.jpg', description: 'iPhone 14 Pro cameras', imageHint: 'iphone purple back' },
+  { id: 'img4', imageUrl: '/iphone-14-pro-4.jpg', description: 'iPhone 14 Pro side', imageHint: 'iphone purple side' },
+];
+
 export default function PhoneDetailPage({ params }: { params: { id: string } }) {
   const phone = phones.find((p) => p.id === params.id);
 
   if (!phone) {
     notFound();
   }
-  
-  const phoneImages = phone.images
-    .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
-    .filter(Boolean);
+
+  // Use hardcoded images if it's the iPhone 14 Pro, otherwise use the existing logic
+  const useHardcoded = phone.id === 'iphone-14-pro';
+  const phoneImages = useHardcoded
+    ? hardcodedImages
+    : phone.images
+        .map((imageId) => hardcodedImages.find((p) => p.id === imageId)) // This part is a placeholder, will use real images if not iphone 14 pro
+        .filter(Boolean);
 
   const [activeImage, setActiveImage] = React.useState(phoneImages[0]);
 
@@ -53,7 +65,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
                 className="object-cover transition-opacity duration-300"
                 data-ai-hint={activeImage.imageHint}
                 key={activeImage.id}
-                unoptimized={activeImage.imageUrl.startsWith('/')}
+                unoptimized
               />
             </div>
           </Card>
@@ -75,7 +87,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
                     sizes="20vw"
                     className="object-cover"
                     data-ai-hint={image.imageHint}
-                    unoptimized={image.imageUrl.startsWith('/')}
+                    unoptimized
                   />
                 </button>
               )

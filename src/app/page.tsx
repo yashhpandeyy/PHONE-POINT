@@ -44,7 +44,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <section className="relative w-full h-[70vh] flex items-center justify-center text-center">
+      <section className="relative w-full h-[40vh] flex items-center justify-center text-center">
         <Image
           src="/phonepoint.png"
           alt="Phone Point hero image"
@@ -54,17 +54,6 @@ export default function Home() {
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-        <div className="relative z-10 text-white max-w-3xl px-4">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-primary shadow-black [text-shadow:_0_2px_4px_var(--tw-shadow-color)]">
-            Upgrade Your World, Not Your Budget
-          </h1>
-          <p className="mt-4 text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto">
-            Discover certified refurbished phones that look and feel like new, at prices you'll love.
-          </p>
-          <Button asChild size="lg" className="mt-8">
-            <Link href="/phones">Shop All Phones</Link>
-          </Button>
-        </div>
       </section>
 
       <section className="py-16 md:py-24 bg-background">

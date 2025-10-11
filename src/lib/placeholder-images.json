@@ -1,3 +1,64 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "iphone-14-pro-purple",
+      "description": "iPhone 14 Pro in Deep Purple",
+      "imageUrl": "https://picsum.photos/seed/iphone14pro/800/800",
+      "imageHint": "iphone purple"
+    },
+    {
+      "id": "samsung-s23-ultra-black",
+      "description": "Samsung Galaxy S23 Ultra in Phantom Black",
+      "imageUrl": "https://picsum.photos/seed/samsungs23/800/800",
+      "imageHint": "samsung phone"
+    },
+    {
+      "id": "pixel-7-pro-obsidian",
+      "description": "Google Pixel 7 Pro in Obsidian",
+      "imageUrl": "https://picsum.photos/seed/pixel7pro/800/800",
+      "imageHint": "google pixel"
+    },
+    {
+      "id": "iphone-13-midnight",
+      "description": "iPhone 13 in Midnight",
+      "imageUrl": "https://picsum.photos/seed/iphone13/800/800",
+      "imageHint": "iphone black"
+    },
+    {
+      "id": "samsung-z-fold-4-green",
+      "description": "Samsung Galaxy Z Fold 4 in Graygreen",
+      "imageUrl": "https://picsum.photos/seed/zfold4/800/800",
+      "imageHint": "samsung fold"
+    },
+    {
+      "id": "pixel-6a-chalk",
+      "description": "Google Pixel 6a in Chalk",
+      "imageUrl": "https://picsum.photos/seed/pixel6a/800/800",
+      "imageHint": "pixel white"
+    },
+    {
+      "id": "hero-image",
+      "description": "Hero image showing various phones",
+      "imageUrl": "https://picsum.photos/seed/hero/1200/600",
+      "imageHint": "phones collection"
+    },
+    {
+      "id": "apple-logo",
+      "description": "Apple logo",
+      "imageUrl": "https://picsum.photos/seed/applelogo/200/200",
+      "imageHint": "apple logo"
+    },
+    {
+      "id": "samsung-logo",
+      "description": "Samsung logo",
+      "imageUrl": "https://picsum.photos/seed/samsunglogo/200/200",
+      "imageHint": "samsung logo"
+    },
+    {
+      "id": "google-logo",
+      "description": "Google logo",
+      "imageUrl": "https://picsum.photos/seed/googlelogo/200/200",
+      "imageHint": "google logo"
+    }
+  ]
 }

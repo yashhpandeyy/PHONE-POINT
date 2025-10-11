@@ -58,12 +58,12 @@ export default function Home() {
             {brands.map(brand => (
                 <Link href={`/phones?brand=${brand.name}`} key={brand.name}>
                   <Card className="bg-card hover:bg-accent/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 h-full">
-                    <CardContent className="p-8 flex justify-center items-center h-40 relative">
+                    <CardContent className="p-8 flex justify-center items-center h-32 relative">
                        <Image
                         src={brand.logo}
                         alt={`${brand.name} logo`}
                         fill
-                        className="object-contain"
+                        className="object-contain p-4"
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
                     </CardContent>

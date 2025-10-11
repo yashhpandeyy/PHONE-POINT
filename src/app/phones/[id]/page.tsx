@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 const hardcodedImages = [
   { id: 'img1', imageUrl: '/first.jpg', description: 'iPhone 14 Pro front', imageHint: 'iphone front' },
   { id: 'img2', imageUrl: '/second.jpg', description: 'iPhone 14 Pro back', imageHint: 'iphone purple' },
-  { id: 'img3', imageUrl: '/iphone-14-pro-3.jpg', description: 'iPhone 14 Pro cameras', imageHint: 'iphone purple back' },
+  { id: 'img3', imageUrl: '/third.jpg', description: 'iPhone 14 Pro cameras', imageHint: 'iphone purple back' },
   { id: 'img4', imageUrl: '/iphone-14-pro-4.jpg', description: 'iPhone 14 Pro side', imageHint: 'iphone purple side' },
 ];
 

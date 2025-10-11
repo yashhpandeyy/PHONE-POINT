@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { phones } from "@/lib/data";
@@ -15,6 +17,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ShoppingCart, ShieldCheck, Star } from "lucide-react";
+import React from "react";
+import { cn } from "@/lib/utils";
 
 export default function PhoneDetailPage({ params }: { params: { id: string } }) {
   const phone = phones.find((p) => p.id === params.id);
@@ -22,28 +26,59 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
   if (!phone) {
     notFound();
   }
+  
+  const phoneImages = phone.images
+    .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
+    .filter(Boolean);
 
-  const image = PlaceHolderImages.find((p) => p.id === phone.image);
+  const [activeImage, setActiveImage] = React.useState(phoneImages[0]);
+
+
+  if (!activeImage) {
+    // Handle case where no images are found, though data structure should prevent this
+    return <div>Image data not available.</div>;
+  }
 
   return (
     <div className="container py-12">
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-        <div>
+        <div className="flex flex-col gap-4">
           <Card className="overflow-hidden border-2">
             <div className="relative aspect-square w-full">
-              {image && (
-                <Image
-                  src={image.imageUrl}
-                  alt={phone.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
-                  data-ai-hint={image.imageHint}
-                />
-              )}
+              <Image
+                src={activeImage.imageUrl}
+                alt={phone.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover transition-opacity duration-300"
+                data-ai-hint={activeImage.imageHint}
+                key={activeImage.id}
+              />
             </div>
           </Card>
-          {/* In a real app, this would be a carousel */}
+          <div className="grid grid-cols-5 gap-2">
+            {phoneImages.map((image) => (
+              image && (
+                <button
+                  key={image.id}
+                  className={cn(
+                    "relative aspect-square rounded-md overflow-hidden border-2 transition",
+                    activeImage.id === image.id ? "border-primary" : "border-transparent hover:border-primary/50"
+                  )}
+                  onClick={() => setActiveImage(image)}
+                >
+                  <Image
+                    src={image.imageUrl}
+                    alt={image.description}
+                    fill
+                    sizes="20vw"
+                    className="object-cover"
+                    data-ai-hint={image.imageHint}
+                  />
+                </button>
+              )
+            ))}
+          </div>
         </div>
         
         <div className="flex flex-col gap-6">

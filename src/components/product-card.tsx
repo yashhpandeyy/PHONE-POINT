@@ -11,7 +11,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ phone }: ProductCardProps) {
-  const image = PlaceHolderImages.find((p) => p.id === phone.image);
+  const image = PlaceHolderImages.find((p) => p.id === phone.images[0]);
 
   return (
     <Card className="w-full overflow-hidden flex flex-col group border-2 border-card hover:border-primary/50 transition-all duration-300">
@@ -23,7 +23,7 @@ export function ProductCard({ phone }: ProductCardProps) {
                 src={image.imageUrl}
                 alt={phone.name}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
                 data-ai-hint={image.imageHint}
               />

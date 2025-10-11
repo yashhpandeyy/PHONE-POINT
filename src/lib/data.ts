@@ -7,7 +7,7 @@ export type Phone = {
   condition: 'Excellent' | 'Good' | 'Fair';
   storage: '64GB' | '128GB' | '256GB' | '512GB';
   color: string;
-  image: string; // Placeholder ID from placeholder-images.json
+  images: string[]; // Placeholder ID from placeholder-images.json
   description: string;
   specs: {
     display: string;
@@ -27,7 +27,7 @@ export const phones: Phone[] = [
     condition: 'Excellent',
     storage: '256GB',
     color: 'Deep Purple',
-    image: 'iphone-14-pro-purple',
+    images: ['iphone-14-pro-purple', 'iphone-14-pro-purple-2', 'iphone-14-pro-purple-3'],
     description: 'The iPhone 14 Pro features the Dynamic Island, a 48MP Main camera for up to 4x greater resolution, and an Always-On display.',
     specs: {
       display: '6.1" Super Retina XDR display',
@@ -45,7 +45,7 @@ export const phones: Phone[] = [
     condition: 'Excellent',
     storage: '512GB',
     color: 'Phantom Black',
-    image: 'samsung-s23-ultra-black',
+    images: ['samsung-s23-ultra-black', 'samsung-s23-ultra-black-2', 'samsung-s23-ultra-black-3'],
     description: 'The Galaxy S23 Ultra comes with a built-in S Pen, an epic 200MP camera, and our most powerful processor ever.',
     specs: {
       display: '6.8" Dynamic AMOLED 2X',
@@ -63,7 +63,7 @@ export const phones: Phone[] = [
     condition: 'Good',
     storage: '128GB',
     color: 'Obsidian',
-    image: 'pixel-7-pro-obsidian',
+    images: ['pixel-7-pro-obsidian', 'pixel-7-pro-obsidian-2', 'pixel-7-pro-obsidian-3'],
     description: 'The Google Pixel 7 Pro is the most powerful Pixel yet, with Google Tensor G2 and a pro-level camera system.',
     specs: {
       display: '6.7" QHD+ LTPO OLED',
@@ -81,7 +81,7 @@ export const phones: Phone[] = [
     condition: 'Good',
     storage: '128GB',
     color: 'Midnight',
-    image: 'iphone-13-midnight',
+    images: ['iphone-13-midnight', 'iphone-13-midnight-2', 'iphone-13-midnight-3'],
     description: 'The iPhone 13 boasts a beautiful Super Retina XDR display and the advanced A15 Bionic chip for lightning-fast performance.',
     specs: {
       display: '6.1" Super Retina XDR display',
@@ -99,7 +99,7 @@ export const phones: Phone[] = [
     condition: 'Excellent',
     storage: '256GB',
     color: 'Graygreen',
-    image: 'samsung-z-fold-4-green',
+    images: ['samsung-z-fold-4-green', 'samsung-z-fold-4-green-2', 'samsung-z-fold-4-green-3'],
     description: 'Unfold an immersive experience with the Galaxy Z Fold 4, featuring a massive main screen and PC-like multitasking.',
     specs: {
       display: '7.6" Main, 6.2" Cover',
@@ -117,7 +117,7 @@ export const phones: Phone[] = [
     condition: 'Fair',
     storage: '128GB',
     color: 'Chalk',
-    image: 'pixel-6a-chalk',
+    images: ['pixel-6a-chalk', 'pixel-6a-chalk-2', 'pixel-6a-chalk-3'],
     description: 'Experience the power of Google Tensor at an amazing price. The Pixel 6a is smart, powerful, and helpful.',
     specs: {
       display: '6.1" FHD+ OLED',

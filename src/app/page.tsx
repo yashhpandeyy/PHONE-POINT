@@ -25,15 +25,6 @@ export default function WelcomePage() {
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("/sw.js")
-          .then((reg) => console.log("SW registered:", reg.scope))
-          .catch((err) => console.error("SW registration failed:", err));
-      });
-    }
-
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     };

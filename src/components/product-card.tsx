@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import type { Phone } from "@/lib/data";
@@ -26,6 +27,7 @@ export function ProductCard({ phone }: ProductCardProps) {
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
                 data-ai-hint={image.imageHint}
+                unoptimized={image.imageUrl.startsWith('/')}
               />
             )}
             <Badge variant="secondary" className="absolute top-3 right-3 bg-primary text-primary-foreground">{phone.condition}</Badge>

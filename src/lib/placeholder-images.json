@@ -1,6 +1,12 @@
 {
   "placeholderImages": [
     {
+      "id": "iphone-14-pro-local",
+      "description": "iPhone 14 Pro main display image from local",
+      "imageUrl": "/iphone-14-pro.jpg",
+      "imageHint": "iphone front"
+    },
+    {
       "id": "iphone-14-pro-display",
       "description": "iPhone 14 Pro main display image",
       "imageUrl": "https://images.unsplash.com/photo-1664478546384-15415554484c?w=800&q=80",

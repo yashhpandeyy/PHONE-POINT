@@ -12,16 +12,19 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ phone }: ProductCardProps) {
-  let image = PlaceHolderImages.find((p) => p.id === phone.images[0]);
+  let image;
 
   // Handle the specific case for iPhone 14 Pro to use 'first.jpg'
   if (phone.id === 'iphone-14-pro') {
     image = {
-      id: 'iphone-14-pro-display',
+      id: 'iphone-14-pro-display-local',
       imageUrl: '/first.jpg',
       imageHint: 'iphone front',
       description: 'iPhone 14 Pro'
     };
+  } else {
+    // Fallback to the first image from placeholder data for other phones
+    image = PlaceHolderImages.find((p) => p.id === phone.images[0]);
   }
   
   if (!image) {

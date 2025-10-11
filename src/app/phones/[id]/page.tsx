@@ -22,16 +22,34 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
+type PhoneImage = {
+  id: string;
+  imageUrl: string;
+  description: string;
+  imageHint: string;
+};
+
 export default function PhoneDetailPage({ params }: { params: { id: string } }) {
   const phone = phones.find((p) => p.id === params.id);
 
   if (!phone) {
     notFound();
   }
+  
+  let phoneImages: PhoneImage[] = [];
 
-  const phoneImages = phone.images
-    .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
-    .filter(Boolean) as { id: string; imageUrl: string; description: string; imageHint: string }[];
+  if (phone.id === 'iphone-14-pro') {
+    phoneImages = [
+        { id: 'iphone-14-pro-display', imageUrl: '/first.jpg', imageHint: 'iphone front', description: 'iPhone 14 Pro' },
+        { id: 'iphone-14-pro-purple', imageUrl: '/second.jpg', imageHint: 'iphone purple', description: 'iPhone 14 Pro' },
+        { id: 'iphone-14-pro-purple-2', imageUrl: '/third.jpg', imageHint: 'iphone purple back', description: 'iPhone 14 Pro' },
+        { id: 'iphone-14-pro-purple-3', imageUrl: 'https://images.unsplash.com/photo-1665453158434-93816ba89338?w=800&q=80', imageHint: 'iphone purple side', description: 'iPhone 14 Pro side view' },
+      ];
+  } else {
+      phoneImages = phone.images
+      .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
+      .filter(Boolean) as PhoneImage[];
+  }
 
 
   const [activeImage, setActiveImage] = React.useState(phoneImages[0]);
@@ -56,7 +74,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
                 className="object-cover transition-opacity duration-300"
                 data-ai-hint={activeImage.imageHint}
                 key={activeImage.id}
-                unoptimized={activeImage.imageUrl.startsWith('/')}
+                unoptimized
               />
             </div>
           </Card>
@@ -78,7 +96,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
                     sizes="20vw"
                     className="object-cover"
                     data-ai-hint={image.imageHint}
-                    unoptimized={image.imageUrl.startsWith('/')}
+                    unoptimized
                   />
                 </button>
               )

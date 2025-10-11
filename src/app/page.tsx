@@ -44,19 +44,26 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <section className="relative w-full h-[40vh] flex items-center justify-center text-center">
-        <Image
-          src="/phonepoint.png"
-          alt="Phone Point hero image"
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+      <section className="py-16 md:py-24">
+        <div className="container text-center">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+                Upgrade Your Tech
+            </h1>
+            <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
+                Find incredible deals on certified refurbished phones from the brands you love.
+            </p>
+            <div className="mt-10 flex justify-center gap-x-6">
+                <Button asChild size="lg">
+                    <Link href="/phones">Browse All Phones</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                    <Link href="/deals">See Top Deals</Link>
+                </Button>
+            </div>
+        </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-card/50">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-3xl font-bold tracking-tight">
@@ -77,7 +84,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24">
         <div className="container text-center">
           <h2 className="text-3xl font-bold tracking-tight">Shop By Brand</h2>
           <p className="mt-2 text-muted-foreground max-w-lg mx-auto">

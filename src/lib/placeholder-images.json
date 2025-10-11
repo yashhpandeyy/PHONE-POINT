@@ -9,13 +9,13 @@
     {
       "id": "iphone-14-pro-purple-2",
       "description": "iPhone 14 Pro in Deep Purple, back view",
-      "imageUrl": "https://images.unsplash.com/photo-1678659523778-685b37e95b9d?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1664478546384-15415554484c?w=800&q=80",
       "imageHint": "iphone purple back"
     },
     {
       "id": "iphone-14-pro-purple-3",
       "description": "iPhone 14 Pro in Deep Purple, side view",
-      "imageUrl": "https://images.unsplash.com/photo-1678659523778-685b37e95b9d?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1665453158434-93816ba89338?w=800&q=80",
       "imageHint": "iphone purple side"
     },
     {
@@ -27,13 +27,13 @@
     {
       "id": "samsung-s23-ultra-black-2",
       "description": "Samsung Galaxy S23 Ultra in Phantom Black, back view",
-      "imageUrl": "https://images.unsplash.com/photo-1675865264933-255979b00989?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1678902573935-802c1d53d463?w=800&q=80",
       "imageHint": "samsung phone back"
     },
     {
       "id": "samsung-s23-ultra-black-3",
       "description": "Samsung Galaxy S23 Ultra in Phantom Black, with S-pen",
-      "imageUrl": "https://images.unsplash.com/photo-1675865264933-255979b00989?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1695663363365-c4873b0a884a?w=800&q=80",
       "imageHint": "samsung phone pen"
     },
     {
@@ -45,13 +45,13 @@
     {
       "id": "pixel-7-pro-obsidian-2",
       "description": "Google Pixel 7 Pro in Obsidian, back view",
-      "imageUrl": "https://images.unsplash.com/photo-1665679413695-26336585c20d?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1666453982823-380d3215582a?w=800&q=80",
       "imageHint": "google pixel back"
     },
     {
       "id": "pixel-7-pro-obsidian-3",
       "description": "Google Pixel 7 Pro in Obsidian, angle view",
-      "imageUrl": "https://images.unsplash.com/photo-1665679413695-26336585c20d?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1665679413692-7f28dd85774a?w=800&q=80",
       "imageHint": "google pixel angle"
     },
     {
@@ -63,13 +63,13 @@
     {
       "id": "iphone-13-midnight-2",
       "description": "iPhone 13 in Midnight, back view",
-      "imageUrl": "https://images.unsplash.com/photo-1645474945991-776915fb103c?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1633621412239-66858a741517?w=800&q=80",
       "imageHint": "iphone black back"
     },
     {
       "id": "iphone-13-midnight-3",
       "description": "iPhone 13 in Midnight, side view",
-      "imageUrl": "https://images.unsplash.com/photo-1645474945991-776915fb103c?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1633611894769-354a37f735d9?w=800&q=80",
       "imageHint": "iphone black side"
     },
     {
@@ -81,13 +81,13 @@
     {
       "id": "samsung-z-fold-4-green-2",
       "description": "Samsung Galaxy Z Fold 4 in Graygreen, open view",
-      "imageUrl": "https://images.unsplash.com/photo-1661956602116-aa6865609028?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1661956602868-6ae368943878?w=800&q=80",
       "imageHint": "samsung fold open"
     },
     {
       "id": "samsung-z-fold-4-green-3",
       "description": "Samsung Galaxy Z Fold 4 in Graygreen, hinge view",
-      "imageUrl": "https://images.unsplash.com/photo-1661956602116-aa6865609028?w=800&q=80",
+      "imageUrl": "https://images.unsplash.com/photo-1661956601031-4cf09efd405f?w=800&q=80",
       "imageHint": "samsung fold hinge"
     },
     {

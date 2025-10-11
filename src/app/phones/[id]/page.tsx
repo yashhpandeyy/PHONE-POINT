@@ -59,6 +59,10 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
       { id: 'pixel-7-pro-third', imageUrl: '/thirdp.jpg', imageHint: 'google pixel back', description: 'Google Pixel 7 Pro Back' },
       { id: 'pixel-7-pro-fourth', imageUrl: '/forthp.jpg', imageHint: 'google pixel another', description: 'Google Pixel 7 Pro Another View' },
     ];
+  } else if (phone.id === 'google-pixel-6a') {
+    phoneImages = [
+      { id: 'pixel-6a-display', imageUrl: '/forthp.jpg', imageHint: 'google pixel', description: 'Google Pixel 6a' },
+    ];
   }
   else {
       phoneImages = phone.images

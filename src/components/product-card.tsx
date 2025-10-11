@@ -36,6 +36,13 @@ export function ProductCard({ phone }: ProductCardProps) {
       imageHint: 'google pixel',
       description: 'Google Pixel 7 Pro'
     };
+  } else if (phone.id === 'google-pixel-6a') {
+    image = {
+      id: 'pixel-6a-display-local',
+      imageUrl: '/forthp.jpg',
+      imageHint: 'google pixel',
+      description: 'Google Pixel 6a'
+    };
   }
   else {
     // Fallback to the first image from placeholder data for other phones

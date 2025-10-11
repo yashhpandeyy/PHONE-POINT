@@ -18,9 +18,13 @@ export default function WelcomePage() {
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
+      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
+      // Stash the event so it can be triggered later.
       setInstallPrompt(e);
+      // Update UI to notify the user they can install the PWA
       setIsInstallable(true);
+      console.log("beforeinstallprompt event fired");
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
@@ -32,20 +36,23 @@ export default function WelcomePage() {
 
   const handleInstallClick = async () => {
     if (!installPrompt) return;
+    // Show the install prompt
     installPrompt.prompt();
+    // Wait for the user to respond to the prompt
     const { outcome } = await installPrompt.userChoice;
     if (outcome === 'accepted') {
       console.log('User accepted the install prompt');
     } else {
       console.log('User dismissed the install prompt');
     }
+    // We can only use the prompt once, so clear it.
     setInstallPrompt(null);
     setIsInstallable(false);
   };
 
   return (
     <div
-      className="relative flex h-screen w-full flex-col items-center justify-end bg-contain bg-no-repeat bg-center"
+      className="relative flex h-screen w-full flex-col items-center justify-end bg-contain bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/phonepoint.png')" }}
     >
       <div className="absolute inset-0 bg-black/30" />

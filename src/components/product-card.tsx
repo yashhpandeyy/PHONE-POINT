@@ -32,7 +32,7 @@ export function ProductCard({ phone }: ProductCardProps) {
   } else if (phone.id === 'google-pixel-7-pro') {
     image = {
       id: 'pixel-7-pro-display-local',
-      imageUrl: '/pixel2.jpg',
+      imageUrl: '/firstp.jpg',
       imageHint: 'google pixel',
       description: 'Google Pixel 7 Pro'
     };

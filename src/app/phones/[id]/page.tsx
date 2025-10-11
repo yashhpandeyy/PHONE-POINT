@@ -54,8 +54,8 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
     ];
   } else if (phone.id === 'google-pixel-7-pro') {
     phoneImages = [
+      { id: 'pixel-7-pro-display', imageUrl: '/firstp.jpg', imageHint: 'google pixel', description: 'Google Pixel 7 Pro' },
       { id: 'pixel-7-pro-second', imageUrl: '/pixel1.jpg', imageHint: 'google pixel side', description: 'Google Pixel 7 Pro Side' },
-      { id: 'pixel-7-pro-display', imageUrl: '/pixel2.jpg', imageHint: 'google pixel', description: 'Google Pixel 7 Pro' },
       { id: 'pixel-7-pro-third', imageUrl: '/pixel3.jpg', imageHint: 'google pixel back', description: 'Google Pixel 7 Pro Back' },
       { id: 'pixel-7-pro-fourth', imageUrl: '/pixel4.jpg', imageHint: 'google pixel another', description: 'Google Pixel 7 Pro Another View' },
     ];

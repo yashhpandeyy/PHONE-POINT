@@ -128,5 +128,3 @@ export const phones: Phone[] = [
     },
   },
 ];
-
-    

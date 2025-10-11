@@ -50,6 +50,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
         { id: 'samsung-s23-ultra-display', imageUrl: '/samsung1.jpg', imageHint: 'samsung phone', description: 'Samsung Galaxy S23 Ultra' },
         { id: 'samsung-s23-ultra-side', imageUrl: '/samsung2.jpg', imageHint: 'samsung phone side', description: 'Samsung Galaxy S23 Ultra Side' },
         { id: 'samsung-s23-ultra-third', imageUrl: '/samsung3.jpg', imageHint: 'samsung phone back', description: 'Samsung Galaxy S23 Ultra Back' },
+        { id: 'samsung-s23-ultra-fourth', imageUrl: '/samsung4.jpg', imageHint: 'samsung phone another', description: 'Samsung Galaxy S23 Ultra Another View' },
         ...phone.images
           .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
           .filter(Boolean) as PhoneImage[]

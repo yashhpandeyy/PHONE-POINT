@@ -17,11 +17,13 @@ export default function WelcomePage() {
   const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("beforeinstallprompt", (e) => {
+    const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setInstallPrompt(e);
       setIsInstallable(true);
-    });
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
@@ -31,6 +33,10 @@ export default function WelcomePage() {
           .catch((err) => console.error("SW registration failed:", err));
       });
     }
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
   }, []);
 
   const handleInstallClick = async () => {

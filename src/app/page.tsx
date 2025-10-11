@@ -13,10 +13,16 @@ const AppleLogo = () => (
 );
 
 const SamsungLogo = () => (
-  <svg className="h-12 w-auto text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M21.11,6.08h-4.33c-0.2,0-0.38,0.1-0.49,0.26l-3.32,5.19l-1.95-3.31c-0.1-0.17-0.28-0.27-0.48-0.27H6.21 c-0.3,0-0.55,0.25-0.55,0.55c0,0.14,0.05,0.27,0.15,0.38l3.96,4.45l-4.08,4.48c-0.1,0.11-0.15,0.24-0.15,0.38 c0,0.3,0.25,0.55,0.55,0.55h4.33c0.2,0,0.38-0.1,0.49-0.26l3.32-5.19l1.95,3.31c0.1,0.17,0.28,0.27,0.48,0.27h4.33 c0.3,0,0.55-0.25,0.55-0.55c0-0.14-0.05-0.27-0.15-0.38l-3.96-4.45l4.08-4.48c0.1-0.11,0.15-0.24,0.15-0.38 C21.66,6.33,21.41,6.08,21.11,6.08z"></path>
+  <svg
+    className="h-12 w-auto text-white"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M21.11,6.08h-4.33c-0.2,0-0.38,0.1-0.49,0.26l-3.32,5.19l-1.95-3.31c-0.1-0.17-0.28-0.27-0.48-0.27H6.21 c-0.3,0-0.55,0.25-0.55,0.55c0,0.14,0.05,0.27,0.15,0.38l3.96,4.45l-4.08,4.48c-0.1,0.11-0.15,0.24-0.15,0.38 c0,0.3,0.25,0.55,0.55,0.55h4.33c0.2,0,0.38-0.1,0.49-0.26l3.32-5.19l1.95,3.31c0.1,0.17,0.28,0.27,0.48,0.27h4.33 c0.3,0,0.55-0.25,0.55-0.55c0-0.14-0.05-0.27-0.15-0.38l-3.96-4.45l4.08-4.48c0.1-0.11,0.15-0.24,0.15-0.38 C21.66,6.33,21.41,6.08,21.11,6.08z" />
   </svg>
 );
+
 
 const GoogleLogo = () => (
     <svg className="h-12 w-auto" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +46,7 @@ export default function Home() {
     <div className="flex flex-col min-h-[100dvh]">
       <section className="relative w-full h-[60vh] md:h-[70vh]">
         <Image
-          src="/hero-image.jpeg"
+          src="/hero-image.png"
           alt="Phone Point hero image"
           fill
           className="object-cover"

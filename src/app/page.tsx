@@ -4,11 +4,16 @@ import Link from "next/link";
 
 export default function WelcomePage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold mb-8">Welcome to Phone Point</h1>
-      <Button asChild size="lg">
-        <Link href="/home">Enter Store</Link>
-      </Button>
+    <div
+      className="relative flex h-screen w-full flex-col items-center justify-end bg-cover bg-center"
+      style={{ backgroundImage: "url('/phonepoint.png')" }}
+    >
+      <div className="absolute inset-0 bg-black/30" />
+      <div className="relative z-10 p-8">
+        <Button asChild size="lg">
+          <Link href="/home">Enter Store</Link>
+        </Button>
+      </div>
     </div>
   );
 }

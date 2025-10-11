@@ -48,6 +48,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
   } else if (phone.id === 'samsung-galaxy-s23-ultra') {
     phoneImages = [
         { id: 'samsung-s23-ultra-display', imageUrl: '/samsung1.jpg', imageHint: 'samsung phone', description: 'Samsung Galaxy S23 Ultra' },
+        { id: 'samsung-s23-ultra-side', imageUrl: '/samsung2.jpg', imageHint: 'samsung phone side', description: 'Samsung Galaxy S23 Ultra Side' },
         ...phone.images
           .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
           .filter(Boolean) as PhoneImage[]

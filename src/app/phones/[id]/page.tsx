@@ -21,8 +21,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 export default function PhoneDetailPage({ params }: { params: { id: string } }) {
-  const { id } = params;
-  const phone = phones.find((p) => p.id === id);
+  const phone = phones.find((p) => p.id === params.id);
 
   if (!phone) {
     notFound();

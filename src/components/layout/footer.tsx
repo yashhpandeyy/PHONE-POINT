@@ -6,8 +6,8 @@ export function Footer() {
   return (
     <footer className="border-t border-border/40">
       <div className="container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="sm:col-span-2">
             <Logo />
             <p className="mt-4 text-muted-foreground max-w-sm">
               Your trusted source for certified refurbished smartphones at unbeatable prices.

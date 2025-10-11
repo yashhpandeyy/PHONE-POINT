@@ -29,6 +29,13 @@ export function ProductCard({ phone }: ProductCardProps) {
       imageHint: 'samsung phone',
       description: 'Samsung Galaxy S23 Ultra'
     };
+  } else if (phone.id === 'google-pixel-7-pro') {
+    image = {
+      id: 'pixel-7-pro-display-local',
+      imageUrl: '/pixle2.jpg',
+      imageHint: 'google pixel',
+      description: 'Google Pixel 7 Pro'
+    };
   }
   else {
     // Fallback to the first image from placeholder data for other phones

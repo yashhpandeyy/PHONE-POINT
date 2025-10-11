@@ -55,6 +55,13 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
           .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
           .filter(Boolean) as PhoneImage[]
     ];
+  } else if (phone.id === 'google-pixel-7-pro') {
+    phoneImages = [
+      { id: 'pixel-7-pro-display', imageUrl: '/pixle2.jpg', imageHint: 'google pixel', description: 'Google Pixel 7 Pro' },
+      ...phone.images
+          .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
+          .filter(Boolean) as PhoneImage[]
+    ];
   }
   else {
       phoneImages = phone.images

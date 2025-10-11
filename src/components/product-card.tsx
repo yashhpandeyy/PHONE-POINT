@@ -22,7 +22,15 @@ export function ProductCard({ phone }: ProductCardProps) {
       imageHint: 'iphone front',
       description: 'iPhone 14 Pro'
     };
-  } else {
+  } else if (phone.id === 'samsung-galaxy-s23-ultra') {
+    image = {
+      id: 'samsung-s23-ultra-display-local',
+      imageUrl: '/samsung1.jpg',
+      imageHint: 'samsung phone',
+      description: 'Samsung Galaxy S23 Ultra'
+    };
+  }
+  else {
     // Fallback to the first image from placeholder data for other phones
     image = PlaceHolderImages.find((p) => p.id === phone.images[0]);
   }

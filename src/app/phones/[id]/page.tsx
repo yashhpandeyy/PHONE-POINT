@@ -45,7 +45,15 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
         { id: 'iphone-14-pro-purple-2', imageUrl: '/third.jpg', imageHint: 'iphone purple back', description: 'iPhone 14 Pro' },
         { id: 'iphone-14-pro-purple-3', imageUrl: 'https://images.unsplash.com/photo-1665453158434-93816ba89338?w=800&q=80', imageHint: 'iphone purple side', description: 'iPhone 14 Pro side view' },
       ];
-  } else {
+  } else if (phone.id === 'samsung-galaxy-s23-ultra') {
+    phoneImages = [
+        { id: 'samsung-s23-ultra-display', imageUrl: '/samsung1.jpg', imageHint: 'samsung phone', description: 'Samsung Galaxy S23 Ultra' },
+        ...phone.images
+          .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
+          .filter(Boolean) as PhoneImage[]
+    ];
+  }
+  else {
       phoneImages = phone.images
       .map((imageId) => PlaceHolderImages.find((p) => p.id === imageId))
       .filter(Boolean) as PhoneImage[];

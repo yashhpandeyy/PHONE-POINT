@@ -18,13 +18,13 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <section className="relative w-full h-[60vh] md:h-[70vh] bg-background">
+      <section className="relative w-full h-[60vh] md:h-[70vh]">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
             alt={heroImage.description}
             fill
-            className="object-contain"
+            className="object-cover"
             data-ai-hint={heroImage.imageHint}
             priority
           />

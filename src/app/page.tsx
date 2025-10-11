@@ -1,18 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { phones } from "@/lib/data";
-import { ProductCard } from "@/components/product-card";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { ArrowRight } from "lucide-react";
+import Image from 'next/image';
+import Link from 'next/link';
+import {Button} from '@/components/ui/button';
+import {Card, CardContent} from '@/components/ui/card';
+import {phones} from '@/lib/data';
+import {ProductCard} from '@/components/product-card';
+import {PlaceHolderImages} from '@/lib/placeholder-images';
+import {ArrowRight} from 'lucide-react';
 
 export default function Home() {
   const featuredPhones = phones.slice(0, 4);
   const brands = [
-    { name: "Apple", logoId: "apple-logo" },
-    { name: "Samsung", logoId: "samsung-logo" },
-    { name: "Google", logoId: "google-logo" },
+    {name: 'Apple', logoId: 'apple-logo'},
+    {name: 'Samsung', logoId: 'samsung-logo'},
+    {name: 'Google', logoId: 'google-logo'},
   ];
 
   return (
@@ -24,19 +24,25 @@ export default function Home() {
           fill
           className="object-cover"
           priority
+          sizes="100vw"
         />
       </section>
 
       <section className="py-16 md:py-24 bg-background">
-        <div className="container">
+        <div className="container px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
-             <h2 className="text-3xl font-bold tracking-tight">Featured Deals</h2>
-             <Link href="/phones" className="flex items-center gap-2 text-primary hover:underline">
-               View All <ArrowRight className="w-4 h-4"/>
-             </Link>
+            <h2 className="text-3xl font-bold tracking-tight">
+              Featured Deals
+            </h2>
+            <Link
+              href="/phones"
+              className="flex items-center gap-2 text-primary hover:underline"
+            >
+              View All <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredPhones.map((phone) => (
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {featuredPhones.map(phone => (
               <ProductCard key={phone.id} phone={phone} />
             ))}
           </div>
@@ -46,10 +52,14 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-background">
         <div className="container text-center">
           <h2 className="text-3xl font-bold tracking-tight">Shop By Brand</h2>
-          <p className="mt-2 text-muted-foreground max-w-lg mx-auto">Find your favorite brands and their best models.</p>
+          <p className="mt-2 text-muted-foreground max-w-lg mx-auto">
+            Find your favorite brands and their best models.
+          </p>
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {brands.map((brand) => {
-              const brandLogo = PlaceHolderImages.find(p => p.id === brand.logoId);
+            {brands.map(brand => {
+              const brandLogo = PlaceHolderImages.find(
+                p => p.id === brand.logoId
+              );
               return (
                 <Link href={`/phones?brand=${brand.name}`} key={brand.name}>
                   <Card className="bg-card hover:bg-accent/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1">
@@ -62,7 +72,7 @@ export default function Home() {
                           height={120}
                           className="h-16 w-auto object-contain invert brightness-0 filter"
                           data-ai-hint={brandLogo.imageHint}
-                          style={{ color: 'white' }}
+                          style={{color: 'white'}}
                         />
                       )}
                     </CardContent>

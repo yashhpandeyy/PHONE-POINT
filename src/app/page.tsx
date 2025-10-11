@@ -55,25 +55,6 @@ export default function Home() {
         />
       </section>
 
-      <section className="py-16 md:py-24">
-        <div className="container text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                Upgrade Your Tech
-            </h1>
-            <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
-                Find incredible deals on certified refurbished phones from the brands you love.
-            </p>
-            <div className="mt-10 flex justify-center gap-x-6">
-                <Button asChild size="lg">
-                    <Link href="/phones">Browse All Phones</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                    <Link href="/deals">See Top Deals</Link>
-                </Button>
-            </div>
-        </div>
-      </section>
-
       <section className="py-16 md:py-24 bg-card/50">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">

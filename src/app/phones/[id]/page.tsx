@@ -53,6 +53,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
                 className="object-cover transition-opacity duration-300"
                 data-ai-hint={activeImage.imageHint}
                 key={activeImage.id}
+                unoptimized={activeImage.imageUrl.startsWith('/')}
               />
             </div>
           </Card>
@@ -74,6 +75,7 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
                     sizes="20vw"
                     className="object-cover"
                     data-ai-hint={image.imageHint}
+                    unoptimized={image.imageUrl.startsWith('/')}
                   />
                 </button>
               )
@@ -147,3 +149,5 @@ export default function PhoneDetailPage({ params }: { params: { id: string } }) 
     </div>
   );
 }
+
+    

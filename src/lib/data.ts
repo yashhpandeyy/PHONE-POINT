@@ -28,7 +28,7 @@ export const phones: Phone[] = [
     condition: 'Excellent',
     storage: '256GB',
     color: 'Deep Purple',
-    images: ['iphone-14-pro-local', 'iphone-14-pro-purple', 'iphone-14-pro-purple-2', 'iphone-14-pro-purple-3'],
+    images: ['iphone-14-pro-local', 'iphone-14-pro-local-2', 'iphone-14-pro-local-3', 'iphone-14-pro-local-4'],
     description: 'The iPhone 14 Pro features the Dynamic Island, a 48MP Main camera for up to 4x greater resolution, and an Always-On display.',
     specs: {
       display: '6.1" Super Retina XDR display',
@@ -128,3 +128,5 @@ export const phones: Phone[] = [
     },
   },
 ];
+
+    

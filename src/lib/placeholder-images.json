@@ -38,9 +38,9 @@
     },
     {
       "id": "hero-image",
-      "description": "Hero image showing various phones",
-      "imageUrl": "https://picsum.photos/seed/hero/1200/600",
-      "imageHint": "phones collection"
+      "description": "Sabse Sasta Matlab? Phone Point",
+      "imageUrl": "/hero-image.jpeg",
+      "imageHint": "phone point logo"
     },
     {
       "id": "apple-logo",

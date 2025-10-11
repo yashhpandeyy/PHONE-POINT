@@ -18,34 +18,17 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <section className="relative w-full h-[60vh] md:h-[70vh]">
+      <section className="relative w-full h-[60vh] md:h-[70vh] bg-background">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
             alt={heroImage.description}
             fill
-            className="object-cover"
+            className="object-contain"
             data-ai-hint={heroImage.imageHint}
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-background/30" />
-        <div className="relative container h-full flex flex-col items-center justify-end text-center pb-12 md:pb-24">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            Premium Tech, Second Life
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-primary/80 md:text-xl">
-            Discover certified refurbished phones that look and feel like new. All at a fraction of the cost.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 w-full max-w-md sm:max-w-none px-4 sm:px-0">
-            <Button asChild size="lg" className="text-lg py-6 px-8 flex-1 sm:flex-initial">
-              <Link href="/phones">Browse All Phones</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="text-lg py-6 px-8 border-primary/50 text-primary hover:bg-primary/10 hover:text-primary flex-1 sm:flex-initial">
-              <Link href="/deals">View Top Deals</Link>
-            </Button>
-          </div>
-        </div>
       </section>
 
       <section className="py-16 md:py-24 bg-background">

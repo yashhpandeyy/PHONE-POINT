@@ -7,7 +7,7 @@ import { Home, ShoppingCart, User, TicketPercent } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { href: '/', icon: Home, label: 'Home' },
+  { href: '/home', icon: Home, label: 'Home' },
   { href: '/account', icon: User, label: 'Account' },
   { href: '/deals', icon: TicketPercent, label: 'Deals' },
   { href: '/cart', icon: ShoppingCart, label: 'Cart' },

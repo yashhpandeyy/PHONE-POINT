@@ -61,19 +61,15 @@ export default function WelcomePage() {
       {/* Content */}
       <div className="relative z-10 p-8 flex flex-col items-center gap-4">
 
-        {/* Conditionally render based on installability */}
-        {hasMounted && (
-          <>
-            {isInstallable && (
-              <Button onClick={handleInstallClick} size="lg" className="w-48">
-                📲 Install App
-              </Button>
-            )}
-            <Button asChild size="lg" variant={isInstallable ? "outline" : "default"} className="w-48">
-              <Link href="/home">Enter Store</Link>
-            </Button>
-          </>
+        {/* Conditionally render install button, always render Enter Store */}
+        {hasMounted && isInstallable && (
+          <Button onClick={handleInstallClick} size="lg" className="w-48">
+            📲 Install App
+          </Button>
         )}
+        <Button asChild size="lg" variant={hasMounted && isInstallable ? "outline" : "default"} className="w-48">
+          <Link href="/home">Enter Store</Link>
+        </Button>
       </div>
     </div>
   );

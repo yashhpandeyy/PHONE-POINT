@@ -1,22 +1,23 @@
-
 {
   "name": "Phone Point",
   "short_name": "PhonePoint",
+  "description": "The best deals on refurbished phones.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050A28",
   "theme_color": "#F6BD68",
-  "description": "Your one-stop shop for refurbished phones.",
   "icons": [
     {
-      "src": "/icon-192x192.png",
+      "src": "/LOGO.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "/LOGO.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

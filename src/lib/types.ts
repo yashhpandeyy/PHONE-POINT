@@ -5,6 +5,8 @@ export interface PhoneDocument extends Models.Document {
   // Common fields
   name: string;
   price: number;
+  new_price?: number; // Promotional price
+  tag?: 'sale' | 'budget' | 'like-new' | 'none'; // Deal categorization
   description: string;
   image: string[];
   type: 'phone' | 'accessory' | 'repair';

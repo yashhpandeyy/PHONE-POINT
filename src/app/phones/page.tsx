@@ -16,7 +16,7 @@ import { Loader2, Search, X, SlidersHorizontal, Trash2, Tag } from "lucide-react
 import { SoldForm } from "@/components/admin/sold-form";
 import Link from "next/link";
 import { useSearchParams } from 'next/navigation';
-import { databases } from '@/lib/appwrite';
+import { databases, DATABASE_ID, COLLECTION_ID_PHONES } from '@/lib/appwrite';
 import type { PhoneDocument } from '@/lib/types';
 import { Query } from 'appwrite';
 import { useAuth } from '@/context/auth-context';
@@ -28,9 +28,6 @@ import { cn } from '@/lib/utils';
 
 import { Suspense } from 'react';
 import { ListingPageSkeleton } from '@/components/ui/listing-skeleton';
-
-const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID_PHONES = "products";
 
 function PhonesList() {
   const searchParams = useSearchParams();
@@ -117,8 +114,15 @@ function PhonesList() {
       result.sort((a, b) => a.price - b.price);
     } else if (sortBy === 'price-desc') {
       result.sort((a, b) => b.price - a.price);
+    } else if (sortBy === 'featured') {
+      // Prioritize phones, then others. Recency within each.
+      result.sort((a, b) => {
+        const aPriority = a.type === 'phone' ? 0 : 1;
+        const bPriority = b.type === 'phone' ? 0 : 1;
+        if (aPriority !== bPriority) return aPriority - bPriority;
+        return new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime();
+      });
     }
-    // 'featured' keeps the default order (by createdAt desc)
 
     return result;
   }, [phones, searchQuery, sortBy, conditionFilter, minPrice, maxPrice]);

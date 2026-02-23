@@ -23,12 +23,32 @@ export default function Home() {
   useEffect(() => {
     const fetchPhones = async () => {
       try {
+        // Fetch a larger batch to sort locally
         const response = await databases.listDocuments(
           DATABASE_ID,
           COLLECTION_ID_PHONES,
-          [Query.limit(4)] // Fetch only 4 for the featured section
+          [
+            Query.orderDesc('$createdAt'),
+            Query.limit(20)
+          ]
         );
-        setFeaturedPhones(response.documents as PhoneDocument[]);
+
+        const allProducts = response.documents as unknown as PhoneDocument[];
+
+        // Sort locally: Phones first, then everything else. Within groups, by recency.
+        const sortedProducts = [...allProducts].sort((a, b) => {
+          const aPriority = a.type === 'phone' ? 0 : 1;
+          const bPriority = b.type === 'phone' ? 0 : 1;
+
+          if (aPriority !== bPriority) return aPriority - bPriority;
+
+          // If same priority, use createdAt (should already be mostly handled by query, but being explicit)
+          return new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime();
+        });
+
+        // Show up to 8 featured products (2 rows on desktop)
+        setFeaturedPhones(sortedProducts.slice(0, 8));
+        console.log("✅ Prioritized products for home:", sortedProducts.slice(0, 8).map(p => ({ n: p.name, t: p.type })));
       } catch (error) {
         console.error("Failed to fetch featured phones:", error);
       } finally {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { databases } from '@/lib/appwrite';
+import { databases, DATABASE_ID, COLLECTION_ID_PRODUCTS } from '@/lib/appwrite';
 import type { PhoneDocument } from '@/lib/types';
 import { Query } from 'appwrite';
 import { useAuth } from '@/context/auth-context';
@@ -30,11 +30,8 @@ import {
 import { SoldForm } from "@/components/admin/sold-form";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import Link from "next/link";
-
-const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID_PRODUCTS = "products";
+import Image from "next/image";
 
 export default function StockPage() {
     const { user } = useAuth();

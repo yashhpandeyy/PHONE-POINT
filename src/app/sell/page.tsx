@@ -7,14 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { databases } from '@/lib/appwrite';
+import { databases, DATABASE_ID, COLLECTION_ID_PHONES } from '@/lib/appwrite';
 import { ID } from 'appwrite';
 import { Loader2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AuthGuard } from '@/components/auth-guard';
-
-const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID_PHONES = "products";
 
 const initialPhoneData = {
   imei: '',
@@ -28,12 +25,16 @@ const initialPhoneData = {
   camera: '',
   Battery: '',
   Processor: '',
+  new_price: '',
+  tag: 'none',
 };
 
 const initialAccessoryData = {
   name: '',
   brand: '',
   price: '',
+  new_price: '',
+  tag: 'none',
   Condition: '',
   Colour: '',
   description: '',
@@ -42,6 +43,8 @@ const initialAccessoryData = {
 const initialRepairData = {
   name: '',
   price: '',
+  new_price: '',
+  tag: 'none',
   description: '',
 };
 
@@ -69,7 +72,7 @@ export default function SellPage() {
     const { id, value } = e.target;
     setFormData((prev: any) => ({
       ...prev,
-      [id]: id === 'price' || id === 'Battery' ? Number(value) : value,
+      [id]: id === 'price' || id === 'Battery' || id === 'new_price' ? Number(value) : value,
     }));
   };
 
@@ -122,7 +125,13 @@ export default function SellPage() {
           return;
         }
         const { imei, ...payload } = formData;
-        const documentData = { ...payload, image: imageUrls, type: 'phone' };
+        const documentData = {
+          ...payload,
+          image: imageUrls,
+          type: 'phone',
+          new_price: formData.new_price ? Number(formData.new_price) : null,
+          tag: formData.tag || 'none'
+        };
 
         try {
           await databases.getDocument(DATABASE_ID, COLLECTION_ID_PHONES, documentId);
@@ -137,9 +146,16 @@ export default function SellPage() {
           }
         }
       } else { // Handle Accessory and Repair
-        const payload = { ...formData, image: imageUrls, type: productType };
+        const { new_price, ...payloadWithoutNewPrice } = formData;
+        const finalPayload = {
+          ...payloadWithoutNewPrice,
+          image: imageUrls,
+          type: productType,
+          new_price: formData.new_price ? Number(formData.new_price) : null,
+          tag: formData.tag || 'none'
+        };
 
-        await databases.createDocument(DATABASE_ID, COLLECTION_ID_PHONES, ID.unique(), payload);
+        await databases.createDocument(DATABASE_ID, COLLECTION_ID_PHONES, ID.unique(), finalPayload);
         toast({
           title: `${productType.charAt(0).toUpperCase() + productType.slice(1)} Listed!`,
           description: `${formData.name} has been successfully added.`,
@@ -181,9 +197,15 @@ export default function SellPage() {
       </div>
       <div className="grid md:grid-cols-2 gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="price">Price (Integer)</Label>
+          <Label htmlFor="price">Original Price (Integer)</Label>
           <Input id="price" type="number" value={formData.price || ''} onChange={handleInputChange} required max="500000" />
         </div>
+        <div className="grid gap-2">
+          <Label htmlFor="new_price">Discounted Price (Optional)</Label>
+          <Input id="new_price" type="number" value={formData.new_price || ''} onChange={handleInputChange} max="500000" placeholder="Leave empty if no sale" />
+        </div>
+      </div>
+      <div className="grid md:grid-cols-2 gap-6">
         <div className="grid gap-2">
           <Label htmlFor="Condition">Condition</Label>
           <Select value={formData.Condition || ''} onValueChange={(value) => handleSelectChange('Condition', value)}>
@@ -192,6 +214,18 @@ export default function SellPage() {
               <SelectItem value="new">New</SelectItem>
               <SelectItem value="used">Used</SelectItem>
               <SelectItem value="damaged">Damaged</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="tag">Deal Tag</Label>
+          <Select value={formData.tag || 'none'} onValueChange={(value) => handleSelectChange('tag', value)}>
+            <SelectTrigger id="tag"><SelectValue placeholder="Select tag" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">None</SelectItem>
+              <SelectItem value="sale">Sale (Price Drop)</SelectItem>
+              <SelectItem value="budget">Budget (Value)</SelectItem>
+              <SelectItem value="like-new">Like-New (Premium)</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -253,12 +287,30 @@ export default function SellPage() {
       </div>
       <div className="grid md:grid-cols-2 gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="price">Price (Integer)</Label>
+          <Label htmlFor="price">Original Price (Integer)</Label>
           <Input id="price" type="number" value={formData.price || ''} onChange={handleInputChange} required max="500000" />
         </div>
         <div className="grid gap-2">
+          <Label htmlFor="new_price">Discounted Price (Optional)</Label>
+          <Input id="new_price" type="number" value={formData.new_price || ''} onChange={handleInputChange} max="500000" placeholder="Leave empty if no sale" />
+        </div>
+      </div>
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid gap-2">
           <Label htmlFor="Colour">Colour</Label>
           <Input id="Colour" value={formData.Colour || ''} onChange={handleInputChange} required />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="tag">Deal Tag</Label>
+          <Select value={formData.tag || 'none'} onValueChange={(value) => handleSelectChange('tag', value)}>
+            <SelectTrigger id="tag"><SelectValue placeholder="Select tag" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">None</SelectItem>
+              <SelectItem value="sale">Sale (Price Drop)</SelectItem>
+              <SelectItem value="budget">Budget (Value)</SelectItem>
+              <SelectItem value="like-new">Like-New (Premium)</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="grid gap-2">
@@ -290,9 +342,27 @@ export default function SellPage() {
         <Label htmlFor="name">Service Name</Label>
         <Input id="name" value={formData.name || ''} onChange={handleInputChange} required />
       </div>
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid gap-2">
+          <Label htmlFor="price">Original Price (Integer)</Label>
+          <Input id="price" type="number" value={formData.price || ''} onChange={handleInputChange} required max="500000" />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="new_price">Discounted Price (Optional)</Label>
+          <Input id="new_price" type="number" value={formData.new_price || ''} onChange={handleInputChange} max="500000" placeholder="Leave empty if no sale" />
+        </div>
+      </div>
       <div className="grid gap-2">
-        <Label htmlFor="price">Price (Integer)</Label>
-        <Input id="price" type="number" value={formData.price || ''} onChange={handleInputChange} required max="500000" />
+        <Label htmlFor="tag">Deal Tag</Label>
+        <Select value={formData.tag || 'none'} onValueChange={(value) => handleSelectChange('tag', value)}>
+          <SelectTrigger id="tag"><SelectValue placeholder="Select tag" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">None</SelectItem>
+            <SelectItem value="sale">Sale (Price Drop)</SelectItem>
+            <SelectItem value="budget">Budget (Value)</SelectItem>
+            <SelectItem value="like-new">Like-New (Premium)</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="grid gap-2">
         <Label htmlFor="description">Service Description</Label>

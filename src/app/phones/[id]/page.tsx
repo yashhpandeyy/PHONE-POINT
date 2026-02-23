@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { MessageCircle, ShieldCheck, Loader2, Save } from "lucide-react";
+import { MessageCircle, ShieldCheck, Loader2, Save, Sparkles } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { databases } from "@/lib/appwrite";
@@ -64,7 +64,7 @@ export default function PhoneDetailPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    const isNumberField = name === 'price' || name === 'Battery';
+    const isNumberField = name === 'price' || name === 'Battery' || name === 'new_price';
     setFormData(prev => ({
       ...prev,
       [name]: isNumberField ? Number(value) : value,
@@ -249,25 +249,74 @@ export default function PhoneDetailPage() {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-4 mt-2">
+                <div className="flex flex-wrap items-center gap-4 mt-2">
                   {phone.Condition && <Badge variant="outline" className="text-base border-primary text-primary capitalize">{phone.Condition}</Badge>}
+                  {phone.tag && phone.tag !== 'none' && (
+                    <Badge className={cn(
+                      "text-base capitalize border-0",
+                      phone.tag === 'sale' ? "bg-red-500 text-white" :
+                        phone.tag === 'budget' ? "bg-green-500 text-white" : "bg-purple-500 text-white"
+                    )}>
+                      {phone.tag.replace('-', ' ')}
+                    </Badge>
+                  )}
                   {isPhone && phone.storage && <p className="text-muted-foreground">{storageLabel} | {phone.Colour}</p>}
                   {!isPhone && phone.Colour && <p className="text-muted-foreground">{phone.Colour}</p>}
                 </div>
               )}
             </div>
 
+            {phone.tag === 'sale' && (
+              <div className="bg-red-50 border border-red-100 rounded-lg p-3 flex items-center gap-2 text-red-600 animate-pulse">
+                <Sparkles className="h-5 w-5" />
+                <span className="font-semibold text-sm">Limited Time Offer! Price significantly dropped.</span>
+              </div>
+            )}
+
             <div className="flex items-baseline gap-4 mt-2">
               {isAdmin ? (
-                <div className="grid gap-2">
-                  <Label htmlFor="price">Price</Label>
-                  <div className="flex items-center gap-2">
-                    <span className="text-4xl font-bold text-primary">₹</span>
-                    <Input id="price" name="price" type="number" value={formData.price || ''} onChange={handleInputChange} className="text-4xl font-bold text-primary h-auto p-0 border-0" />
+                <div className="grid md:grid-cols-2 gap-6 w-full">
+                  <div className="grid gap-2">
+                    <Label htmlFor="price">Original Price</Label>
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl font-bold text-muted-foreground">₹</span>
+                      <Input id="price" name="price" type="number" value={formData.price || ''} onChange={handleInputChange} className="text-2xl font-bold" />
+                    </div>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="new_price">Sale Price (Optional)</Label>
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl font-bold text-red-600">₹</span>
+                      <Input id="new_price" name="new_price" type="number" value={formData.new_price || ''} onChange={handleInputChange} className="text-2xl font-bold text-red-600" placeholder="0" />
+                    </div>
+                  </div>
+                  <div className="grid gap-2 md:col-span-2">
+                    <Label htmlFor="tag">Deal Tag</Label>
+                    <Select name="tag" value={formData.tag || 'none'} onValueChange={(value) => handleSelectChange('tag', value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select deal tag" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="sale">Sale (Hot Deal)</SelectItem>
+                        <SelectItem value="budget">Budget Pick</SelectItem>
+                        <SelectItem value="like-new">Like-New</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               ) : (
-                <span className="text-4xl font-bold text-primary">₹{phone.price}</span>
+                phone.tag === 'sale' && phone.new_price ? (
+                  <div className="flex flex-col">
+                    <span className="text-lg text-muted-foreground line-through italic">M.R.P: ₹{phone.price}</span>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-5xl font-extrabold text-red-600">₹{phone.new_price}</span>
+                      <span className="text-sm font-medium text-red-500 bg-red-50 px-2 py-0.5 rounded">SAVE ₹{phone.price - phone.new_price}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <span className="text-4xl font-bold text-primary">₹{phone.price}</span>
+                )
               )}
             </div>
 

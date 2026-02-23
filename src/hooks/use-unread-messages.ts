@@ -2,12 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/auth-context';
-import { databases, client } from '@/lib/appwrite';
+import { databases, client, DATABASE_ID, COLLECTION_ID_CONVERSATIONS } from '@/lib/appwrite';
 import { Query } from 'appwrite';
 import type { ConversationDocument } from '@/lib/types';
-
-const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID_CONVERSATIONS = "conversations";
 const ADMIN_USER_ID = process.env.NEXT_PUBLIC_APPWRITE_ADMIN_USER_ID || "69798d759c496d417b17";
 
 /**

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { PhoneDocument } from "@/lib/types";
 import { Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   phone: PhoneDocument;
@@ -32,6 +33,13 @@ export function ProductCard({ phone, isAdmin, onDelete, priority }: ProductCardP
     onDelete?.(phone.$id);
   };
 
+  const hasSale = phone.tag === 'sale' && phone.new_price;
+  const tagColors: Record<string, string> = {
+    'sale': 'bg-red-500 text-white',
+    'budget': 'bg-green-500 text-white',
+    'like-new': 'bg-purple-500 text-white',
+  };
+
   return (
     <Card className="w-full overflow-hidden flex flex-col group border-2 border-card hover:border-primary/50 transition-all duration-300 relative hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
       {isAdmin && (
@@ -56,8 +64,14 @@ export function ProductCard({ phone, isAdmin, onDelete, priority }: ProductCardP
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            {/* We move the condition badge to avoid being overlapped by delete button */}
-            <Badge variant="secondary" className="absolute top-3 left-3 capitalize bg-primary text-primary-foreground">{condition}</Badge>
+            <div className="absolute top-3 left-3 flex flex-col gap-2">
+              <Badge variant="secondary" className="capitalize bg-primary text-primary-foreground w-fit">{condition}</Badge>
+              {phone.tag && phone.tag !== 'none' && (
+                <Badge className={cn("capitalize w-fit border-0", tagColors[phone.tag])}>
+                  {phone.tag.replace('-', ' ')}
+                </Badge>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent className="p-4 flex-grow">
@@ -68,7 +82,14 @@ export function ProductCard({ phone, isAdmin, onDelete, priority }: ProductCardP
         </CardContent>
         <CardFooter className="p-4 pt-0 flex justify-between items-center">
           <div>
-            <p className="text-xl font-bold text-primary">₹{phone.price}</p>
+            {hasSale ? (
+              <div className="flex flex-col">
+                <span className="text-xs text-muted-foreground line-through">₹{phone.price}</span>
+                <span className="text-xl font-bold text-red-600">₹{phone.new_price}</span>
+              </div>
+            ) : (
+              <p className="text-xl font-bold text-primary">₹{phone.price}</p>
+            )}
           </div>
           <Button variant="outline" className="border-accent hover:bg-accent hover:text-accent-foreground">View</Button>
         </CardFooter>

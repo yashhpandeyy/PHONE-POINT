@@ -15,10 +15,7 @@ import {
 import { PhoneDocument } from '@/lib/types';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { databases } from '@/lib/appwrite';
-
-const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID_PRODUCTS = "products";
+import { databases, DATABASE_ID, COLLECTION_ID_PRODUCTS } from '@/lib/appwrite';
 
 // IMPORTANT: User needs to replace this with their actual deployed Web App URL
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOYqq6Nd-Yld46oaYvzbsF53OfFDFIHmbSMiKkKjzjtm1JPmaDucuA6gpOkQv3BqQ9/exec';

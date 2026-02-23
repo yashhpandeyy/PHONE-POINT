@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Loader2, Search, SlidersHorizontal, Trash2, Tag } from "lucide-react";
 import { SoldForm } from "@/components/admin/sold-form";
-import { databases } from '@/lib/appwrite';
+import { databases, DATABASE_ID, COLLECTION_ID_PRODUCTS } from '@/lib/appwrite';
 import type { PhoneDocument } from '@/lib/types';
 import { Query } from 'appwrite';
 import { useAuth } from '@/context/auth-context';
@@ -25,9 +25,6 @@ import { AuthGuard } from '@/components/auth-guard';
 
 import { Suspense } from 'react';
 import { ListingPageSkeleton } from '@/components/ui/listing-skeleton';
-
-const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID_PRODUCTS = "products";
 
 function RepairList() {
   const { user } = useAuth();

@@ -9,16 +9,13 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/auth-context';
 import Link from 'next/link';
-import { databases, client } from '@/lib/appwrite';
+import { databases, client, DATABASE_ID, COLLECTION_ID_CONVERSATIONS, COLLECTION_ID_MESSAGES } from '@/lib/appwrite';
 import { ID, Query, AppwriteException } from 'appwrite';
 import type { ConversationDocument, MessageDocument } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
 // --- Configuration ---
-const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID_CONVERSATIONS = "conversations";
-const COLLECTION_ID_MESSAGES = "messages";
 const ADMIN_USER_ID = process.env.NEXT_PUBLIC_APPWRITE_ADMIN_USER_ID || "69798d759c496d417b17";
 
 // ==========================================
@@ -314,6 +311,11 @@ const AdminMessagesView = ({ adminId }: { adminId: string }) => {
                                     className="pr-12"
                                     value={newMessage}
                                     onChange={(e) => setNewMessage(e.target.value)}
+                                    onFocus={() => {
+                                        setTimeout(() => {
+                                            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+                                        }, 300);
+                                    }}
                                     disabled={sending}
                                 />
                                 <Button
@@ -558,6 +560,11 @@ const UserMessagesView = ({ user }: { user: NonNullable<ReturnType<typeof useAut
                             className="pr-12"
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}
+                            onFocus={() => {
+                                setTimeout(() => {
+                                    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+                                }, 300);
+                            }}
                             disabled={sending}
                         />
                         <Button

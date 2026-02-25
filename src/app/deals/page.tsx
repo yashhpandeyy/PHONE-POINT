@@ -73,7 +73,7 @@ export default function DealsPage() {
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent italic">Exclusive Deals</h1>
           <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
-            Hand-picked offers on refurbished tech. New deals added weekly!
+            Hand-picked offers on second hand tech. New deals added weekly!
           </p>
         </div>
 

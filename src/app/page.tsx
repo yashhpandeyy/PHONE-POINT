@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
+import { useAuth } from "@/context/auth-context";
 
 // Extend the Window interface to include `deferredPrompt`
 declare global {
@@ -23,12 +24,17 @@ export default function WelcomePage() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const { user, isLoading: isAuthLoading } = useAuth();
 
   useEffect(() => {
+    if (isAuthLoading) return;
+
     const isPwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     const isDesktop = window.innerWidth > 768;
 
-    if (isPwa || isDesktop) {
+    if (user) {
+      router.replace('/home');
+    } else if (isPwa || isDesktop) {
       router.replace('/login');
     } else {
       const handleBeforeInstallPrompt = (e: Event) => {
@@ -47,7 +53,7 @@ export default function WelcomePage() {
         window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
       };
     }
-  }, [router]);
+  }, [router, user, isAuthLoading]);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;

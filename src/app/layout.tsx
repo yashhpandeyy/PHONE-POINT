@@ -8,8 +8,8 @@ import ServiceWorkerRegister from '@/app/ServiceWorkerRegister';
 import { AuthProvider } from '@/context/auth-context';
 
 export const metadata: Metadata = {
-  title: 'Phone Point | Premium Refurbished Phones',
-  description: 'Find the best deals on high-quality refurbished smartphones. Verified and certified devices.',
+  title: 'Phone Point | Premium second hand Phones',
+  description: 'Find the best deals on high-quality second hand smartphones. Verified and certified devices.',
 };
 
 export const viewport = {

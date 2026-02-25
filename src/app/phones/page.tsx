@@ -238,7 +238,7 @@ function PhonesList() {
       <div className="container py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold">All Our Phones</h1>
-          <p className="text-muted-foreground mt-2">Find your next device from our curated collection of refurbished tech.</p>
+          <p className="text-muted-foreground mt-2">Find your next device from our curated collection of second hand tech.</p>
         </div>
 
         <div className="flex flex-col md:flex-row gap-8">

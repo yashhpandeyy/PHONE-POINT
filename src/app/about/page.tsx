@@ -11,7 +11,7 @@ export default function AboutPage() {
     {
       icon: RefreshCw,
       title: "Sustainability",
-      description: "By choosing refurbished, you help reduce e-waste and give devices a second life. Good for your wallet, great for the planet."
+      description: "By choosing second hand, you help reduce e-waste and give devices a second life. Good for your wallet, great for the planet."
     },
     {
       icon: Heart,
@@ -25,7 +25,7 @@ export default function AboutPage() {
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold">About Phone Point</h1>
         <p className="text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
-          We are dedicated to providing high-quality, certified refurbished phones to give devices a second life and offer you great value.
+          We are dedicated to providing high-quality, certified second hand phones to give devices a second life and offer you great value.
         </p>
       </div>
 
@@ -36,7 +36,7 @@ export default function AboutPage() {
             <p className="text-foreground/80 leading-relaxed text-lg">
               At Phone Point, we believe premium technology should be accessible to everyone.
               Our mission is to bridge the gap between quality and affordability by offering
-              certified refurbished smartphones that deliver a like-new experience at a
+              certified second hand smartphones that deliver a like-new experience at a
               fraction of the price.
             </p>
           </CardContent>

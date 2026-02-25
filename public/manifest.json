@@ -1,7 +1,7 @@
 {
   "name": "Phone Point",
   "short_name": "PhonePoint",
-  "description": "The best deals on refurbished phones.",
+  "description": "The best deals on second hand phones.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050A28",

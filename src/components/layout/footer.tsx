@@ -11,7 +11,7 @@ export function Footer() {
           <div className="col-span-2 md:col-span-4 flex flex-col items-center md:items-start">
             <Logo />
             <p className="mt-4 text-muted-foreground max-w-sm leading-relaxed">
-              Your trusted source for certified refurbished smartphones at unbeatable prices. Quality guaranteed.
+              Your trusted source for certified second hand smartphones at unbeatable prices. Quality guaranteed.
             </p>
             <div className="flex items-center gap-4 mt-6">
               <Link href="#" aria-label="Twitter" className="p-2 rounded-lg bg-accent/30 hover:bg-primary/20 transition-colors">

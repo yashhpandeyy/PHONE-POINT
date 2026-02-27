@@ -3,11 +3,9 @@
 const CACHE_NAME = 'phone-point-cache-v1';
 const urlsToCache = [
   '/',
-  '/home',
   '/globals.css',
   '/phonepoint.png',
-  '/logo.png',
-  // Add icons and manifest for offline
+  '/LOGO.png',
   '/manifest.json',
   '/icon-192x192.png',
   '/icon-512x512.png',

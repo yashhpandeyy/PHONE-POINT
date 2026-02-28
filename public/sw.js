@@ -1,6 +1,6 @@
 // public/sw.js
 
-const CACHE_NAME = 'phone-point-cache-v2';
+const CACHE_NAME = 'phone-point-cache-v3';
 const STATIC_ASSETS = [
   '/phonepoint.png',
   '/LOGO.png',

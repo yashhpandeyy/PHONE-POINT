@@ -134,10 +134,10 @@ export default function LuckyWheelPage() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35vw] h-[35vh] bg-primary/5 rounded-full blur-[180px]" />
 
                 {/* ── Mobile Header (above wheel, phone only) ── */}
-                <div className="flex lg:hidden flex-col items-center text-center z-10 mb-4 mt-16">
-                    <p className="text-primary/70 text-xs font-black tracking-[0.4em] uppercase mb-1">Celebrating · Since 2025</p>
-                    <h2 className="text-gold-shine text-3xl font-black italic leading-tight">HAPPY 1 YEAR ANNIVERSARY</h2>
-                    <p className="text-white/30 text-sm font-black tracking-[0.3em] italic mt-1">PHONE POINT</p>
+                <div className="flex lg:hidden flex-col items-center text-center z-10 mb-6">
+                    <p className="text-primary/70 text-[10px] font-black tracking-[0.4em] uppercase">Since 2025 · Celebrating</p>
+                    <h2 className="text-gold-shine text-xl font-black italic leading-tight mt-1">HAPPY 1 YEAR ANNIVERSARY</h2>
+                    <p className="text-white/25 text-[10px] font-black tracking-[0.3em] italic mt-0.5">PHONE POINT SPECIAL</p>
                 </div>
 
                 {/* ── Left Side Text (desktop only, left-aligned) ── */}
@@ -254,8 +254,8 @@ export default function LuckyWheelPage() {
                 </div>
 
                 {/* ── Mobile Bottom Text ── */}
-                <div className="flex lg:hidden flex-col items-center text-center z-10 mt-4 mb-6">
-                    <p className="text-white/20 text-xs font-black italic tracking-widest">SPIN & WIN · EXCLUSIVE PRIZES</p>
+                <div className="flex lg:hidden flex-col items-center text-center z-10 mt-4">
+                    <p className="text-white/15 text-[10px] font-black italic tracking-widest">SPIN & WIN · EXCLUSIVE PRIZES</p>
                 </div>
 
                 {/* ── Desktop Bottom corners ── */}
@@ -315,8 +315,8 @@ export default function LuckyWheelPage() {
           100% { transform: translateY(110vh) rotate(720deg); opacity: 0.7; }
         }
         .wheel-container {
-          width: min(75vw, 90vh, 680px);
-          height: min(75vw, 90vh, 680px);
+          width: min(65vw, 65vh, 680px);
+          height: min(65vw, 65vh, 680px);
         }
         @media (min-width: 1024px) {
           .wheel-container {

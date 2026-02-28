@@ -55,7 +55,13 @@ self.addEventListener('fetch', (event) => {
 
   // For _next/ chunks - always go to network (never cache these)
   if (event.request.url.includes('/_next/')) {
-    event.respondWith(fetch(event.request));
+    event.respondWith(
+      fetch(event.request).catch((err) => {
+        console.warn('[Service Worker] Fetch failed for _next chunk:', err);
+        // We can't safely fallback for js chunks, just return a new empty response or let it fail
+        return new Response('', { status: 408, statusText: 'Request timeout' });
+      })
+    );
     return;
   }
 

@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, User, TicketPercent, MessageSquare } from 'lucide-react';
+import { Home, User, TicketPercent, MessageSquare, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUnreadMessages } from '@/hooks/use-unread-messages';
 
 const navLinks = [
   { href: '/home', icon: Home, label: 'Home' },
   { href: '/messages', icon: MessageSquare, label: 'Messages' },
+  { href: '/wheel', icon: Sparkles, label: 'Wheel' },
   { href: '/deals', icon: TicketPercent, label: 'Deals' },
   { href: '/account', icon: User, label: 'Account' },
 ];

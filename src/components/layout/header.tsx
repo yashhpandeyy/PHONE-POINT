@@ -72,6 +72,7 @@ export function Header() {
     { href: "/accessories", label: "Accessories" },
     { href: "/repair", label: "Repair" },
     { href: "/deals", label: "Deals" },
+    { href: "/wheel", label: "Lucky Wheel" },
   ];
 
   // Get user role from labels, default to 'user' if not logged in or no role is set

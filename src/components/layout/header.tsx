@@ -91,17 +91,17 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60 shadow-sm shadow-black/10 pt-safe">
+    <header className="sticky top-0 z-50 w-full border-b border-sky-300/50 dark:border-sky-800/50 bg-[#9bcffc] dark:bg-slate-900 backdrop-blur-xl shadow-sm pt-safe">
       <div className="container flex h-16 items-center px-4">
         <div className="flex items-center md:hidden w-1/5">
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="mr-2 hover:bg-primary/10">
+              <Button variant="ghost" size="icon" className="mr-2 hover:bg-primary/10 text-primary">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-full max-w-xs bg-background p-6">
+            <SheetContent side="left" className="w-full max-w-xs bg-background p-6 border-r-primary/20">
               <SheetHeader className="mb-8 text-left">
                 <SheetTitle><Logo /></SheetTitle>
               </SheetHeader>
@@ -110,7 +110,7 @@ export function Header() {
                   <SheetClose asChild key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-lg font-medium text-foreground/80 hover:text-primary transition-colors"
+                      className="text-lg font-medium text-foreground/80 hover:text-primary transition-colors hover:translate-x-1 transform duration-200"
                     >
                       {link.label}
                     </Link>
@@ -128,9 +128,10 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-medium text-foreground/80 transition-colors hover:text-primary"
+                className="font-semibold text-foreground/80 transition-colors hover:text-primary relative group"
               >
                 {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
               </Link>
             ))}
           </nav>
@@ -141,8 +142,8 @@ export function Header() {
         </div>
 
         <div className="flex items-center justify-end gap-2 sm:gap-4 w-auto">
-          <form onSubmit={handleHeaderSearch} className="relative hidden sm:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <form onSubmit={handleHeaderSearch} className="relative hidden sm:block group">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary group-focus-within:text-primary transition-colors" />
             <Input
               type="search"
               placeholder="Search phones..."
@@ -151,15 +152,15 @@ export function Header() {
               onChange={(e) => setHeaderSearch(e.target.value)}
             />
           </form>
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-foreground">
-            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="hover:bg-primary/10 transition-colors">
+            {theme === 'dark' ? <Sun className="h-5 w-5 text-yellow-400 drop-shadow-md" /> : <Moon className="h-5 w-5 text-blue-500 drop-shadow-md" />}
             <span className="sr-only">Toggle theme</span>
           </Button>
           <div className="flex items-center justify-end w-full">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="hover:bg-accent/10">
+                  <User className="h-5 w-5 text-accent" />
                   <span className="sr-only">Account</span>
                 </Button>
               </DropdownMenuTrigger>
@@ -203,8 +204,8 @@ export function Header() {
             </DropdownMenu>
 
             <Button asChild variant="ghost" size="icon" className="relative">
-              <Link href="/messages">
-                <MessageSquare className="h-5 w-5" />
+              <Link href="/messages" className="flex items-center justify-center relative">
+                <MessageSquare className="h-5 w-5 text-green-500 drop-shadow-sm" />
                 {hasUnread && (
                   <span className="absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-yellow-400 animate-pulse ring-2 ring-background" />
                 )}

@@ -25,36 +25,35 @@ const categories = [
 
 export function CategoryTabs() {
     return (
-        <section className="py-4 md:py-6">
+        <section className="py-6 md:py-10 bg-background/50 backdrop-blur-sm border-y border-border/50">
             <div className="container px-4 sm:px-6 lg:px-8">
                 <div
-                    className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3 sm:gap-4 md:gap-6"
                 >
                     {categories.map((cat) => (
                         <Link
                             key={cat.name}
                             href={cat.href}
-                            className="flex-shrink-0 group"
+                            className="group flex flex-col items-center gap-3 transition-transform duration-300 hover:-translate-y-1"
                         >
-                            <div className="flex flex-col items-center gap-2 w-20 sm:w-24">
-                                <div
-                                    className={`
-                    w-14 h-14 sm:w-16 sm:h-16 rounded-2xl
-                    bg-gradient-to-br ${cat.color}
-                    flex items-center justify-center
-                    shadow-md group-hover:shadow-lg
-                    transition-all duration-300
-                    group-hover:scale-110 group-hover:-translate-y-1
-                    group-active:scale-95
-                  `}
-                                >
-                                    <cat.icon className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
-                                </div>
-                                <span className="text-[11px] sm:text-xs font-medium text-foreground/80 text-center leading-tight group-hover:text-primary transition-colors">
-                                    {cat.name}
-                                </span>
+                            <div
+                                className={`
+                                    relative w-full aspect-square max-w-[80px] rounded-2xl sm:rounded-3xl
+                                    bg-gradient-to-br ${cat.color}
+                                    flex items-center justify-center
+                                    shadow-lg shadow-${cat.color.split('-')[1]}-500/20
+                                    group-hover:shadow-${cat.color.split('-')[1]}-500/40
+                                    transition-all duration-300
+                                    group-hover:scale-105
+                                    group-active:scale-95
+                                `}
+                            >
+                                <cat.icon className="h-7 w-7 sm:h-9 sm:w-9 text-white group-hover:rotate-12 transition-transform duration-300" />
+                                <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
+                            <span className="text-[10px] sm:text-xs md:text-sm font-bold text-foreground/90 text-center leading-tight group-hover:text-primary transition-colors uppercase tracking-wider">
+                                {cat.name}
+                            </span>
                         </Link>
                     ))}
                 </div>

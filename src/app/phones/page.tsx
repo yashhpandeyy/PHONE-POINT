@@ -163,38 +163,40 @@ function PhonesList() {
 
   const FilterContent = () => (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold border-b border-border pb-3 hidden md:block">Filters</h2>
+      <h2 className="text-lg font-bold border-b border-primary/20 pb-3 hidden md:block text-primary">Filters</h2>
       <div>
-        <h3 className="font-medium mb-2 text-sm uppercase tracking-wider text-muted-foreground">Brand</h3>
+        <h3 className="font-bold mb-2 text-sm uppercase tracking-wider text-secondary flex items-center gap-2">
+          <Tag className="w-4 h-4" /> Brand
+        </h3>
         <ul className="space-y-2 text-sm">
-          <li><Link href="/phones?brand=Apple" onClick={() => setIsFilterOpen(false)} className="text-foreground/80 hover:text-primary transition-colors">Apple</Link></li>
-          <li><Link href="/phones?brand=Samsung" onClick={() => setIsFilterOpen(false)} className="text-foreground/80 hover:text-primary transition-colors">Samsung</Link></li>
-          <li><Link href="/phones?brand=Google" onClick={() => setIsFilterOpen(false)} className="text-foreground/80 hover:text-primary transition-colors">Google</Link></li>
-          <li><Link href="/phones" onClick={() => setIsFilterOpen(false)} className="text-foreground/80 hover:text-primary transition-colors">All Brands</Link></li>
+          <li><Link href="/phones?brand=Apple" onClick={() => setIsFilterOpen(false)} className="text-foreground/80 hover:text-secondary font-medium transition-colors">Apple</Link></li>
+          <li><Link href="/phones?brand=Samsung" onClick={() => setIsFilterOpen(false)} className="text-foreground/80 hover:text-secondary font-medium transition-colors">Samsung</Link></li>
+          <li><Link href="/phones?brand=Google" onClick={() => setIsFilterOpen(false)} className="text-foreground/80 hover:text-secondary font-medium transition-colors">Google</Link></li>
+          <li><Link href="/phones" onClick={() => setIsFilterOpen(false)} className="text-foreground/80 hover:text-secondary font-medium transition-colors">All Brands</Link></li>
         </ul>
       </div>
       <div>
-        <h3 className="font-medium mb-2 text-sm uppercase tracking-wider text-muted-foreground">Price</h3>
+        <h3 className="font-bold mb-2 text-sm uppercase tracking-wider text-accent">Price</h3>
         <div className="flex items-center gap-2">
           <Input
             type="number"
             placeholder="Min"
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            className="h-8 text-sm"
+            className="h-8 text-sm border-accent/30 focus-visible:ring-accent"
           />
-          <span className="text-muted-foreground text-sm">-</span>
+          <span className="text-accent text-sm font-bold">-</span>
           <Input
             type="number"
             placeholder="Max"
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            className="h-8 text-sm"
+            className="h-8 text-sm border-accent/30 focus-visible:ring-accent"
           />
         </div>
       </div>
       <div>
-        <h3 className="font-medium mb-2 text-sm uppercase tracking-wider text-muted-foreground">Condition</h3>
+        <h3 className="font-bold mb-2 text-sm uppercase tracking-wider text-green-500">Condition</h3>
         <ul className="space-y-2 text-sm">
           {conditions.map((c) => (
             <li key={c}>
@@ -207,8 +209,8 @@ function PhonesList() {
                 className={cn(
                   "capitalize transition-colors text-left w-full",
                   conditionFilter === c
-                    ? "text-primary font-semibold"
-                    : "text-foreground/80 hover:text-primary"
+                    ? "text-green-500 font-bold bg-green-500/10 px-2 py-1 rounded-md"
+                    : "text-foreground/80 hover:text-green-500 font-medium px-2 py-1"
                 )}
               >
                 {c}
@@ -222,7 +224,7 @@ function PhonesList() {
                   setConditionFilter(null);
                   if (window.innerWidth < 768) setIsFilterOpen(false);
                 }}
-                className="text-xs text-destructive flex items-center gap-1 hover:underline"
+                className="text-xs text-destructive flex items-center gap-1 hover:underline font-bold mt-2 px-2"
               >
                 <X className="h-3 w-3" /> Clear
               </button>
@@ -246,14 +248,14 @@ function PhonesList() {
           <div className="md:hidden mb-4">
             <Sheet open={!!isFilterOpen} onOpenChange={setIsFilterOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                <Button variant="outline" className="w-full flex items-center justify-center gap-2 border-primary text-primary hover:bg-primary hover:text-white">
                   <SlidersHorizontal className="h-4 w-4" />
                   Filters
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-full max-w-xs bg-background p-6 overflow-y-auto">
-                <SheetHeader className="mb-6 text-left border-b pb-4">
-                  <SheetTitle>Filters</SheetTitle>
+              <SheetContent side="left" className="w-full max-w-xs bg-gradient-to-b from-background to-primary/5 p-6 overflow-y-auto border-r-2 border-primary/20">
+                <SheetHeader className="mb-6 text-left border-b border-primary/20 pb-4">
+                  <SheetTitle className="text-primary font-bold">Filters</SheetTitle>
                 </SheetHeader>
                 <FilterContent />
               </SheetContent>
@@ -262,7 +264,7 @@ function PhonesList() {
 
           {/* Filters Sidebar (Desktop) */}
           <aside className="hidden md:block w-full md:w-1/4 lg:w-1/5">
-            <div className="md:sticky md:top-24 rounded-xl border border-border bg-card/50 p-5 space-y-6">
+            <div className="md:sticky md:top-24 rounded-xl border-2 border-primary/20 bg-gradient-to-b from-primary/5 via-secondary/5 to-accent/5 p-5 space-y-6 shadow-lg shadow-primary/5">
               <FilterContent />
             </div>
           </aside>

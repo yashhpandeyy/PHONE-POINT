@@ -13,6 +13,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { databases } from '@/lib/appwrite';
 import type { PhoneDocument } from '@/lib/types';
 import { Query } from 'appwrite';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
+import { cn } from '@/lib/utils';
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID_PHONES = "products";
@@ -67,29 +70,52 @@ export default function Home() {
 
   return (
     <AuthGuard>
-      <div className="flex flex-col min-h-[100dvh]">
-        <section className="relative w-full h-[60vh] md:h-[70vh]">
-          <Image
-            src="/phonepoint.png"
-            alt="Phone Point hero image"
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
+      <div className="flex flex-col min-h-[100dvh] bg-background">
+        {/* HERO CAROUSEL replacing the static poster */}
+        <section className="relative w-full overflow-hidden bg-muted">
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            plugins={[Autoplay({ delay: 3000 })]}
+            className="w-full"
+          >
+            <CarouselContent className="ml-0">
+              {[
+                '/Gemini_Generated_Image_3p6ugh3p6ugh3p6u (1).png',
+                '/Gemini_Generated_Image_3p6ugh3p6ugh3p6u.png',
+                '/Gemini_Generated_Image_e2vpoue2vpoue2vp.png',
+                '/Gemini_Generated_Image_jujamjjujamjjuja.png',
+                '/Gemini_Generated_Image_ynp1ibynp1ibynp1.png'
+              ].map((src, index) => (
+                <CarouselItem key={index} className="relative w-full aspect-[21/9] md:aspect-[3/1] max-h-[70vh] select-none pl-0">
+                  <Image
+                    src={src}
+                    alt={`Banner ${index + 1}`}
+                    fill
+                    className="object-cover md:object-contain"
+                    priority={index === 0}
+                    sizes="100vw"
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </section>
 
         <CategoryTabs />
 
-        <section className="py-16 md:py-24 bg-card/50">
-          <div className="container px-4 sm:px-6 lg:px-8">
+        {/* FEATURED DEALS SECTION */}
+        <section className="py-16 md:py-24 bg-gradient-to-b from-primary/5 to-transparent relative">
+          {/* Decorative blur orb */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none" />
+
+          <div className="container px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-bold tracking-tight">
-                Featured Deals
+              <h2 className="text-3xl font-black tracking-tight text-slate-800 dark:text-slate-200">
+                Featured <span className="text-orange-500">Deals</span>
               </h2>
               <Link
                 href="/phones"
-                className="flex items-center gap-2 text-primary hover:underline"
+                className="flex items-center gap-1 text-orange-500 hover:text-orange-600 font-bold"
               >
                 View All <ArrowRight className="w-4 h-4" />
               </Link>
@@ -108,22 +134,29 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24">
-          <div className="container text-center">
-            <h2 className="text-3xl font-bold tracking-tight">Shop By Brand</h2>
+        {/* SHOP BY BRAND SECTION */}
+        <section className="py-16 md:py-24 bg-gradient-to-t from-secondary/10 to-transparent relative">
+          <div className="container text-center relative z-10">
+            <h2 className="text-3xl font-black tracking-tight text-slate-800 dark:text-slate-200">Shop By <span className="text-primary">Brand</span></h2>
             <p className="mt-2 text-muted-foreground max-w-lg mx-auto">
               Find your favorite brands and their best models.
             </p>
             <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
-              {brands.map(brand => (
+              {brands.map((brand, i) => (
                 <Link href={`/phones?brand=${brand.name}`} key={brand.name}>
-                  <Card className="bg-card hover:bg-accent/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 h-full">
-                    <CardContent className="p-8 flex justify-center items-center h-24 relative">
+                  <Card
+                    className={cn(
+                      "hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 h-full border border-border/20 relative overflow-hidden group bg-black rounded-3xl"
+                    )}
+                  >
+                    {/* Hover Glow Effect inside the card */}
+                    <div className="absolute inset-0 bg-white/40 dark:bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <CardContent className="p-8 flex justify-center items-center h-32 relative z-10">
                       <Image
                         src={brand.logo}
                         alt={`${brand.name} logo`}
                         fill
-                        className="object-contain p-6"
+                        className="object-contain p-6 group-hover:scale-110 transition-transform duration-500 drop-shadow-md"
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
                     </CardContent>
@@ -134,6 +167,6 @@ export default function Home() {
           </div>
         </section>
       </div>
-    </AuthGuard>
+    </AuthGuard >
   );
 }

@@ -1,267 +1,330 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { AuthGuard } from '@/components/auth-guard';
-import { Button } from '@/components/ui/button';
-import { Trophy, Gift, Sparkles, RefreshCcw, Share2, Star, X, CheckCircle2, Heart } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Trophy, X, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 
-const OFFERS = [
-    { id: 1, text: "₹500 OFF", color: "#050A28", textColor: "#FFFFFF" },
-    { id: 2, text: "FREE GLASS", color: "#032B7A", textColor: "#FFFFFF" },
-    { id: 3, text: "10% OFF", color: "#050A28", textColor: "#FFFFFF" },
-    { id: 4, text: "B1G1 COVER", color: "#032B7A", textColor: "#FFFFFF" },
-    { id: 5, text: "FREE DELIVERY", color: "#050A28", textColor: "#FFFFFF" },
-    { id: 6, text: "VIP SUPPORT", color: "#032B7A", textColor: "#FFFFFF" },
+const SEGMENTS = [
+    { label: '₹500 OFF', line1: '₹500', line2: 'OFF', bg: '#0a1744' },
+    { label: 'FREE GLASS', line1: 'FREE', line2: 'GLASS', bg: '#122a6b' },
+    { label: '10% OFF', line1: '10%', line2: 'OFF', bg: '#0a1744' },
+    { label: 'B1G1 COVER', line1: 'B1G1', line2: 'COVER', bg: '#122a6b' },
+    { label: 'FREE DELIVERY', line1: 'FREE', line2: 'DELIVERY', bg: '#0a1744' },
+    { label: 'VIP SUPPORT', line1: 'VIP', line2: 'SUPPORT', bg: '#122a6b' },
 ];
 
+const SEG_COUNT = SEGMENTS.length;
+const SEG_ANGLE = 360 / SEG_COUNT;
+
+function easeInOutQuart(t: number) {
+    return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+}
+
+const STARS = [...Array(60)].map(() => ({
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 2.5 + 0.5,
+    delay: Math.random() * 5,
+    dur: Math.random() * 3 + 2,
+}));
+
 export default function LuckyWheelPage() {
-    const [isSpinning, setIsSpinning] = useState(false);
-    const [rotation, setRotation] = useState(0);
-    const [result, setResult] = useState<typeof OFFERS[0] | null>(null);
+    const router = useRouter();
+    const [angle, setAngle] = useState(0);
+    const [spinning, setSpinning] = useState(false);
+    const [winner, setWinner] = useState<typeof SEGMENTS[0] | null>(null);
     const [showOverlay, setShowOverlay] = useState(false);
+    const [bulbFlip, setBulbFlip] = useState(false);
+    const rafRef = useRef<number>(0);
 
-    // Smooth spin logic with high tension
-    const spinWheel = () => {
-        if (isSpinning) return;
+    useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
+    useEffect(() => {
+        const iv = setInterval(() => setBulbFlip(f => !f), 600);
+        return () => clearInterval(iv);
+    }, []);
 
-        setIsSpinning(true);
-        setResult(null);
+    const spin = useCallback(() => {
+        if (spinning) return;
+        setSpinning(true);
+        setWinner(null);
         setShowOverlay(false);
 
-        const segmentAngle = 60;
-        const randomSegment = Math.floor(Math.random() * 6);
-        const targetAngle = 360 - (randomSegment * segmentAngle) - (segmentAngle / 2);
+        const winIdx = Math.floor(Math.random() * SEG_COUNT);
+        const segCenter = winIdx * SEG_ANGLE + SEG_ANGLE / 2;
+        // Wheel rotates clockwise. Pointer (top) reads position (360 - R%360) on the wheel.
+        // To land on segment winIdx center, we need: endAngle%360 = (360 - segCenter)
+        const targetMod = ((360 - segCenter) % 360 + 360) % 360;
+        const currentMod = ((angle % 360) + 360) % 360;
+        const adjustment = ((targetMod - currentMod) % 360 + 360) % 360;
+        const fullTurns = 360 * (8 + Math.floor(Math.random() * 4));
+        const totalDelta = fullTurns + adjustment;
+        const startAngle = angle;
+        const endAngle = startAngle + totalDelta;
+        const duration = 7000;
+        const startTime = performance.now();
 
-        // 15-20 full rotations for an epic feel
-        const extraRotations = 15 * 360;
-        const totalRotation = rotation + extraRotations + targetAngle - (rotation % 360);
+        const animate = (now: number) => {
+            const elapsed = now - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            const current = startAngle + totalDelta * easeInOutQuart(t);
+            setAngle(current);
+            if (t < 1) {
+                rafRef.current = requestAnimationFrame(animate);
+            } else {
+                setAngle(endAngle);
+                setSpinning(false);
+                setWinner(SEGMENTS[winIdx]);
+                setTimeout(() => setShowOverlay(true), 400);
+            }
+        };
+        rafRef.current = requestAnimationFrame(animate);
+    }, [spinning, angle]);
 
-        setRotation(totalRotation);
+    const segPaths = SEGMENTS.map((seg, i) => {
+        const a1 = ((i * SEG_ANGLE - 90) * Math.PI) / 180;
+        const a2 = (((i + 1) * SEG_ANGLE - 90) * Math.PI) / 180;
+        const r = 50, cx = 50, cy = 50;
+        const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+        const x2 = cx + r * Math.cos(a2), y2 = cy + r * Math.sin(a2);
+        const aMid = ((i * SEG_ANGLE + SEG_ANGLE / 2 - 90) * Math.PI) / 180;
+        const tx = cx + 33 * Math.cos(aMid), ty = cy + 33 * Math.sin(aMid);
+        const textRotation = i * SEG_ANGLE + SEG_ANGLE / 2;
+        return { seg, x1, y1, x2, y2, tx, ty, textRotation };
+    });
 
-        // 8 seconds total spin time for "smooth" feel
-        setTimeout(() => {
-            setIsSpinning(false);
-            const wonOffer = OFFERS[randomSegment];
-            setResult(wonOffer);
-
-            setTimeout(() => {
-                setShowOverlay(true);
-            }, 500);
-        }, 8100);
-    };
+    const BULB_COUNT = 24;
+    const bulbs = [...Array(BULB_COUNT)].map((_, i) => {
+        const a = (i * (360 / BULB_COUNT) * Math.PI) / 180;
+        return { x: 50 + Math.sin(a) * 50, y: 50 - Math.cos(a) * 50 };
+    });
 
     return (
         <AuthGuard>
-            <div className="fixed inset-0 bg-[#020518] flex flex-col items-center justify-center overflow-hidden font-inter select-none">
+            <div className="fixed inset-0 bg-[#020518] overflow-hidden flex flex-col lg:flex-row items-center justify-center">
 
-                {/* Immersive Casino Backdrop (Happy Anniversary Marquee) */}
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex flex-col justify-around py-12">
-                    {[...Array(10)].map((_, i) => (
-                        <div key={i} className={cn("flex whitespace-nowrap text-8xl font-black italic", i % 2 === 0 ? "animate-marquee" : "animate-marquee-reverse")}>
-                            {[...Array(10)].map((_, j) => (
-                                <span key={j} className="mx-8">HAPPY 1 YEAR ANNIVERSARY PHONE POINT SPECIAL</span>
-                            ))}
-                        </div>
+                {/* ── Back Arrow ── */}
+                <button
+                    onClick={() => router.push('/')}
+                    className="absolute top-6 left-6 z-50 p-3 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all"
+                >
+                    <ArrowLeft className="w-6 h-6" />
+                </button>
+
+                {/* ── Starfield Background ── */}
+                <div className="absolute inset-0 pointer-events-none">
+                    {STARS.map((s, i) => (
+                        <div
+                            key={i}
+                            className="absolute rounded-full bg-white"
+                            style={{
+                                width: s.size, height: s.size,
+                                top: `${s.y}%`, left: `${s.x}%`,
+                                opacity: 0,
+                                animation: `twinkle ${s.dur}s ease-in-out ${s.delay}s infinite`,
+                            }}
+                        />
                     ))}
                 </div>
 
-                {/* Ambient Glows */}
-                <div className="absolute top-[-20%] left-[-20%] w-[80%] h-[80%] bg-primary/20 rounded-full blur-[200px] animate-pulse" />
-                <div className="absolute bottom-[-20%] right-[-20%] w-[80%] h-[80%] bg-blue-600/10 rounded-full blur-[200px] animate-pulse delay-1000" />
+                {/* ── Ambient glows ── */}
+                <div className="absolute top-0 left-0 w-[50vw] h-[50vh] bg-blue-600/8 rounded-full blur-[250px]" />
+                <div className="absolute bottom-0 right-0 w-[50vw] h-[50vh] bg-indigo-500/8 rounded-full blur-[250px]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35vw] h-[35vh] bg-primary/5 rounded-full blur-[180px]" />
 
-                {/* Floating Decors (Website Optimized) */}
-                <div className="absolute inset-0 flex items-center justify-between px-20 pointer-events-none z-0">
-                    <div className="flex flex-col gap-20">
-                        <Trophy className="w-24 h-24 text-primary/20 rotate-[-15deg] animate-bounce" />
-                        <Star className="w-16 h-16 text-primary/10 animate-pulse delay-300" />
-                        <Heart className="w-20 h-20 text-blue-400/10 animate-bounce delay-700" />
-                    </div>
-                    <div className="flex flex-col gap-20 items-end">
-                        <Sparkles className="w-24 h-24 text-primary/20 rotate-[15deg] animate-pulse" />
-                        <Gift className="w-16 h-16 text-blue-400/10 animate-bounce delay-500" />
-                        <Star className="w-20 h-20 text-primary/10 animate-pulse delay-700" />
-                    </div>
+                {/* ── Mobile Header (above wheel, phone only) ── */}
+                <div className="flex lg:hidden flex-col items-center text-center z-10 mb-4 mt-16">
+                    <p className="text-primary/70 text-xs font-black tracking-[0.4em] uppercase mb-1">Celebrating · Since 2025</p>
+                    <h2 className="text-gold-shine text-3xl font-black italic leading-tight">HAPPY 1 YEAR ANNIVERSARY</h2>
+                    <p className="text-white/30 text-sm font-black tracking-[0.3em] italic mt-1">PHONE POINT</p>
                 </div>
 
-                {/* Main Content Area */}
-                <div className="relative z-10 flex flex-col items-center scale-90 md:scale-100 xl:scale-110">
-
-                    {/* Top Branding */}
-                    <div className="text-center mb-10">
-                        <h2 className="text-primary text-2xl font-black italic tracking-[0.5em] mb-2 drop-shadow-[0_0_10px_#F6BD68]">
-                            SINCE 2025
-                        </h2>
-                        <h1 className="text-white text-8xl md:text-9xl font-black italic leading-none tracking-tighter">
-                            LUCKY <span className="text-primary glow-text">WHEEL</span>
-                        </h1>
-                        <p className="text-white/40 font-bold tracking-widest mt-4">THE PREMIER ANNIVERSARY CASINO EXPERIENCE</p>
-                    </div>
-
-                    {/* Epic Wheel Section */}
-                    <div className="relative">
-                        {/* The Pointer */}
-                        <div className="absolute top-[-40px] left-1/2 -translate-x-1/2 z-[60] drop-shadow-2xl">
-                            <svg width="60" height="80" viewBox="0 0 40 50">
-                                <path d="M20 50L0 0H40L20 50Z" fill="#F6BD68" className="drop-shadow-glow" />
-                                <circle cx="20" cy="15" r="7" fill="#020518" />
-                            </svg>
-                        </div>
-
-                        {/* Glowing Golden Outer Case */}
-                        <div className="p-8 rounded-full bg-gradient-to-b from-[#F6BD68] via-[#8c6b3a] to-[#F6BD68] shadow-[0_0_100px_rgba(246,189,104,0.4)] relative">
-
-                            {/* Decorative Lamps around the border */}
-                            {[...Array(24)].map((_, i) => (
-                                <div
-                                    key={i}
-                                    className={cn(
-                                        "absolute w-4 h-4 rounded-full shadow-[0_0_15px_#fff]",
-                                        i % 2 === 0 ? "bg-white animate-pulse" : "bg-primary animate-pulse delay-150"
-                                    )}
-                                    style={{
-                                        transform: `rotate(${i * 15}deg) translateY(-265px) md:translateY(-315px)`,
-                                        left: 'calc(50% - 8px)',
-                                        top: 'calc(50% - 8px)'
-                                    }}
-                                />
-                            ))}
-
-                            {/* The Spin Container */}
-                            <div
-                                className="w-[500px] h-[500px] md:w-[600px] md:h-[600px] rounded-full border-[10px] border-[#020518] overflow-hidden relative transition-transform duration-[8000ms]"
-                                style={{
-                                    transform: `rotate(${rotation}deg)`,
-                                    // Slow start -> high speed -> gradual smooth stop
-                                    transitionTimingFunction: 'cubic-bezier(0.15, 0, 0, 1)'
-                                }}
-                            >
-                                <svg viewBox="0 0 100 100" className="w-full h-full">
-                                    {OFFERS.map((offer, i) => {
-                                        const angle = 60;
-                                        const startAngle = i * angle;
-                                        const endAngle = (i + 1) * angle;
-                                        const x1 = 50 + 50 * Math.cos((Math.PI * (startAngle - 90)) / 180);
-                                        const y1 = 50 + 50 * Math.sin((Math.PI * (startAngle - 90)) / 180);
-                                        const x2 = 50 + 50 * Math.cos((Math.PI * (endAngle - 90)) / 180);
-                                        const y2 = 50 + 50 * Math.sin((Math.PI * (endAngle - 90)) / 180);
-
-                                        return (
-                                            <g key={offer.id}>
-                                                <path
-                                                    d={`M 50 50 L ${x1} ${y1} A 50 50 0 0 1 ${x2} ${y2} Z`}
-                                                    fill={offer.color}
-                                                    stroke="#ffffff10"
-                                                    strokeWidth="0.2"
-                                                />
-                                                <g transform={`rotate(${startAngle + angle / 2}, 50, 50)`}>
-                                                    <text
-                                                        x="50"
-                                                        y="25"
-                                                        fill="#fff"
-                                                        fontSize="4.5"
-                                                        fontWeight="900"
-                                                        textAnchor="middle"
-                                                        className="italic tracking-tighter"
-                                                    >
-                                                        {offer.text}
-                                                    </text>
-                                                </g>
-                                            </g>
-                                        );
-                                    })}
-                                    <circle cx="50" cy="50" r="15" fill="#020518" />
-                                </svg>
-                            </div>
-
-                            {/* Stationary Clickable Logo Center */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[70]">
-                                <button
-                                    onClick={spinWheel}
-                                    disabled={isSpinning}
-                                    className={cn(
-                                        "w-32 h-32 md:w-44 md:h-44 rounded-full border-8 border-primary bg-[#050A28] p-4 flex items-center justify-center transition-all duration-300 shadow-[0_0_50px_#F6BD68]",
-                                        isSpinning ? "cursor-not-allowed grayscale" : "hover:scale-110 active:scale-90 cursor-pointer group"
-                                    )}
-                                >
-                                    <Image src="/LOGO.png" alt="Logo" width={120} height={120} className="object-contain" />
-                                    {!isSpinning && (
-                                        <div className="absolute inset-[-20px] rounded-full border-4 border-dashed border-primary animate-[spin_10s_linear_infinite]" />
-                                    )}
-                                    <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white text-[#050A28] px-4 py-1.5 rounded-full font-black text-xs whitespace-nowrap animate-bounce shadow-2xl">
-                                        {isSpinning ? 'GOOD LUCK!' : 'CLICK TO SPIN'}
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                {/* ── Left Side Text (desktop only, left-aligned) ── */}
+                <div className="absolute left-10 top-1/2 -translate-y-1/2 text-left z-10 hidden lg:flex flex-col gap-4 max-w-[240px]">
+                    <p className="text-primary/70 text-base font-black tracking-[0.5em] uppercase">Since 2025</p>
+                    <h2 className="text-white text-8xl font-black italic leading-[0.85]">
+                        SPIN<br />
+                        <span className="text-primary">&</span><br />
+                        WIN
+                    </h2>
+                    <div className="w-16 h-1.5 bg-gradient-to-r from-primary to-transparent rounded-full" />
+                    <p className="text-white/25 text-base font-bold tracking-widest uppercase">Exclusive Prizes</p>
                 </div>
 
-                {/* Footer Info (Standalone) */}
-                <div className="fixed bottom-10 left-10 text-white/20 font-black italic text-3xl z-10">PHONE POINT</div>
-                <div className="fixed bottom-10 right-10 text-white/20 font-black italic text-3xl z-10 underline decoration-primary">ANNIVERSARY SPECIAL</div>
+                {/* ── Right Side Text (right-aligned, no cutoff) ── */}
+                <div className="absolute right-6 top-1/2 -translate-y-1/2 text-right z-10 hidden lg:flex flex-col gap-3 items-end">
+                    <p className="text-primary text-lg font-black tracking-[0.5em] uppercase">Celebrating</p>
+                    <h2 className="text-gold-shine text-8xl font-black italic leading-[0.85]">
+                        HAPPY
+                    </h2>
+                    <h2 className="text-gold-shine text-8xl font-black italic leading-[0.85]">
+                        1 YEAR
+                    </h2>
+                    <h3 className="text-white text-5xl font-black italic leading-none tracking-tight">
+                        ANNIVERSARY
+                    </h3>
+                    <div className="w-20 h-1.5 bg-gradient-to-l from-primary to-transparent rounded-full" />
+                    <p className="text-white/30 text-2xl font-black tracking-[0.3em] italic">PHONE POINT</p>
+                </div>
 
-                {/* Casino Winner Overlay */}
-                {showOverlay && result && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/95 backdrop-blur-[20px] animate-overlay-in">
+                {/* ── Center: Wheel ── */}
+                <div className="relative z-20 wheel-container">
 
-                        {/* Multi-Color Party Popper Confetti */}
-                        {[...Array(60)].map((_, i) => (
+                    {/* Pointer */}
+                    <div className="absolute top-[-32px] left-1/2 -translate-x-1/2 z-50">
+                        <svg width="48" height="56" viewBox="0 0 40 48">
+                            <polygon points="20,48 2,0 38,0" fill="#F6BD68" />
+                            <circle cx="20" cy="14" r="5" fill="#020518" />
+                        </svg>
+                    </div>
+
+                    {/* Golden ring */}
+                    <div
+                        className="absolute inset-[-22px] rounded-full"
+                        style={{
+                            background: 'conic-gradient(from 0deg, #F6BD68, #c8923a, #F6BD68, #a07628, #F6BD68, #c8923a, #F6BD68)',
+                            boxShadow: '0 0 80px rgba(246,189,104,0.4), 0 0 150px rgba(246,189,104,0.15), inset 0 0 40px rgba(246,189,104,0.1)',
+                        }}
+                    />
+
+                    {/* Casino bulbs */}
+                    {bulbs.map((b, i) => {
+                        const isLit = (i % 2 === 0) === bulbFlip;
+                        return (
                             <div
                                 key={i}
-                                className={cn(
-                                    "absolute w-3 h-3 rounded-full",
-                                    i % 4 === 0 ? "bg-red-500 animate-popper-l" :
-                                        i % 4 === 1 ? "bg-blue-500 animate-popper-r" :
-                                            i % 4 === 2 ? "bg-yellow-500 animate-popper-l" : "bg-green-500 animate-popper-r"
-                                )}
+                                className="absolute z-30 rounded-full transition-all duration-300"
                                 style={{
-                                    left: `${Math.random() * 100}%`,
-                                    top: `${Math.random() * 100}%`,
-                                    animationDelay: `${Math.random() * 2}s`
+                                    width: 14, height: 14,
+                                    background: isLit ? '#FFFFFF' : '#F6BD68',
+                                    boxShadow: isLit
+                                        ? '0 0 12px 4px rgba(255,255,255,0.9), 0 0 30px #fff'
+                                        : '0 0 12px 4px rgba(246,189,104,0.8), 0 0 25px #F6BD68',
+                                    top: `calc(${b.y}% - 7px)`,
+                                    left: `calc(${b.x}% - 7px)`,
                                 }}
                             />
-                        ))}
+                        );
+                    })}
 
-                        <div className="relative max-w-2xl w-full bg-gradient-to-b from-[#0a113a] to-[#020518] border-[10px] border-primary rounded-[60px] p-16 text-center animate-content-pop shadow-[0_0_200px_rgba(246,189,104,0.6)]">
+                    {/* Spinning wheel SVG */}
+                    <div
+                        className="absolute inset-[8px] rounded-full overflow-hidden z-20"
+                        style={{ transform: `rotate(${angle}deg)` }}
+                    >
+                        <svg viewBox="0 0 100 100" className="w-full h-full">
+                            {segPaths.map(({ seg, x1, y1, x2, y2, tx, ty, textRotation }, i) => (
+                                <g key={i}>
+                                    <path
+                                        d={`M50 50 L${x1} ${y1} A50 50 0 0 1 ${x2} ${y2} Z`}
+                                        fill={seg.bg}
+                                        stroke="rgba(255,255,255,0.06)"
+                                        strokeWidth="0.3"
+                                    />
+                                    <text
+                                        x={tx} y={ty}
+                                        fill="#fff" fontSize="4.5" fontWeight="900" fontStyle="italic"
+                                        textAnchor="middle" dominantBaseline="middle"
+                                        transform={`rotate(${textRotation}, ${tx}, ${ty})`}
+                                    >
+                                        <tspan x={tx} dy="-2.5">{seg.line1}</tspan>
+                                        <tspan x={tx} dy="5">{seg.line2}</tspan>
+                                    </text>
+                                </g>
+                            ))}
+                            <circle cx="50" cy="50" r="16" fill="#020518" stroke="#F6BD68" strokeWidth="1.2" />
+                        </svg>
+                    </div>
 
-                            <div className="flex justify-center mb-10">
-                                <div className="relative">
-                                    <div className="absolute inset-[-40px] bg-primary rounded-full blur-[60px] opacity-40 animate-pulse" />
-                                    <Trophy className="w-32 h-32 text-primary drop-shadow-[0_0_20px_#F6BD68] animate-winner" />
+                    {/* Clickable center logo */}
+                    <button
+                        onClick={spin}
+                        disabled={spinning}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 w-[26%] h-[26%] rounded-full bg-[#050A28] border-[6px] border-primary flex items-center justify-center transition-transform duration-200 hover:scale-110 active:scale-90 disabled:opacity-60 disabled:cursor-not-allowed"
+                        style={{ boxShadow: '0 0 50px rgba(246,189,104,0.5), inset 0 0 20px rgba(246,189,104,0.1)' }}
+                    >
+                        <Image src="/LOGO.png" alt="Phone Point" width={100} height={100} className="object-contain w-[65%] h-[65%]" />
+                        {!spinning && (
+                            <span className="absolute -bottom-11 left-1/2 -translate-x-1/2 bg-primary text-[#050A28] text-[11px] font-black px-4 py-1.5 rounded-full whitespace-nowrap animate-bounce shadow-xl">
+                                TAP TO SPIN
+                            </span>
+                        )}
+                    </button>
+                </div>
+
+                {/* ── Mobile Bottom Text ── */}
+                <div className="flex lg:hidden flex-col items-center text-center z-10 mt-4 mb-6">
+                    <p className="text-white/20 text-xs font-black italic tracking-widest">SPIN & WIN · EXCLUSIVE PRIZES</p>
+                </div>
+
+                {/* ── Desktop Bottom corners ── */}
+                <div className="absolute bottom-5 left-8 text-white/10 font-black italic text-xl z-10 hidden lg:block">PHONE POINT</div>
+                <div className="absolute bottom-5 right-8 text-primary/20 font-black italic text-xl z-10 hidden lg:block">ANNIVERSARY SPECIAL</div>
+
+                {/* ═══════════ Winner Overlay ═══════════ */}
+                {showOverlay && winner && (
+                    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-xl animate-overlay-in">
+                        {[...Array(100)].map((_, i) => {
+                            const colors = ['#F6BD68', '#ef4444', '#3b82f6', '#22c55e', '#a855f7', '#f97316', '#ec4899', '#14b8a6'];
+                            const color = colors[i % colors.length];
+                            const size = Math.random() * 10 + 4;
+                            return (
+                                <div
+                                    key={i}
+                                    className="absolute"
+                                    style={{
+                                        width: size,
+                                        height: size * (Math.random() > 0.5 ? 0.4 : 1),
+                                        backgroundColor: color,
+                                        borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+                                        left: `${Math.random() * 100}%`,
+                                        top: '-5%',
+                                        animation: `confetti-fall ${Math.random() * 2.5 + 2}s ease-in ${Math.random() * 2}s infinite`,
+                                        transform: `rotate(${Math.random() * 360}deg)`,
+                                    }}
+                                />
+                            );
+                        })}
+
+                        <div className="relative max-w-lg w-full mx-4 bg-gradient-to-b from-[#0c1a4a] to-[#020518] border-[4px] md:border-[6px] border-primary rounded-[30px] md:rounded-[40px] p-8 md:p-12 text-center animate-content-pop"
+                            style={{ boxShadow: '0 0 120px rgba(246,189,104,0.4)' }}>
+                            <div className="mb-6 md:mb-8">
+                                <div className="inline-block p-4 md:p-6 rounded-full bg-primary/10 border-2 border-primary animate-winner">
+                                    <Trophy className="w-14 h-14 md:w-20 md:h-20 text-primary" />
                                 </div>
                             </div>
-
-                            <h3 className="text-primary text-3xl font-black italic tracking-[0.4em] mb-6 animate-pulse">JACKPOT WINNER!</h3>
-                            <h1 className="text-8xl md:text-9xl font-black italic text-gold-shine mb-10 leading-tight">
-                                {result.text}
-                            </h1>
-
-                            <div className="bg-white/5 border border-white/10 p-8 rounded-[40px] mb-12">
-                                <p className="text-white/60 text-lg font-bold mb-4 uppercase tracking-widest text-center">Your Exclusive Anniversary Code</p>
-                                <div className="text-white text-5xl font-black font-mono tracking-widest text-center py-4 border-2 border-dashed border-primary/40 rounded-3xl">
-                                    WINNER_POPT_1YR
-                                </div>
-                            </div>
-
-                            <Button
-                                onClick={() => setShowOverlay(false)}
-                                className="h-20 px-16 text-2xl font-black rounded-3xl bg-primary text-[#050A28] hover:bg-white transition-all shadow-2xl uppercase italic"
-                            >
-                                COLLECT PRIZE
-                            </Button>
-
-                            <button
-                                onClick={() => setShowOverlay(false)}
-                                className="absolute top-10 right-10 p-4 rounded-full bg-white/5 text-white/20 hover:text-white transition-all"
-                            >
-                                <X className="w-10 h-10" />
+                            <p className="text-primary text-base md:text-xl font-black tracking-[0.3em] md:tracking-[0.5em] mb-3 md:mb-4 uppercase">Congratulations!</p>
+                            <h1 className="text-5xl md:text-7xl font-black italic text-gold-shine mb-6 md:mb-8 leading-none">{winner.label}</h1>
+                            <p className="text-white/40 text-sm md:text-base">Show this screen at the store to avail your offer!</p>
+                            <button onClick={() => setShowOverlay(false)} className="absolute top-4 right-4 md:top-5 md:right-5 p-2 rounded-full text-white/30 hover:text-white transition-colors">
+                                <X className="w-5 h-5 md:w-6 md:h-6" />
                             </button>
                         </div>
                     </div>
                 )}
             </div>
+
+            <style jsx global>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0; transform: scale(0.5); }
+          50% { opacity: 0.8; transform: scale(1); }
+        }
+        @keyframes confetti-fall {
+          0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(110vh) rotate(720deg); opacity: 0.7; }
+        }
+        .wheel-container {
+          width: min(75vw, 90vh, 680px);
+          height: min(75vw, 90vh, 680px);
+        }
+        @media (min-width: 1024px) {
+          .wheel-container {
+            width: min(90vh, 680px);
+            height: min(90vh, 680px);
+          }
+        }
+      `}</style>
         </AuthGuard>
     );
 }

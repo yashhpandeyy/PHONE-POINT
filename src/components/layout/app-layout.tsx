@@ -11,6 +11,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
   const isMessagesPage = pathname === '/messages';
+  const isWheelPage = pathname === '/wheel';
 
   useEffect(() => {
     const handleFocusIn = (e: FocusEvent) => {
@@ -29,7 +30,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener('focusin', handleFocusIn);
   }, []);
 
-  if (isHomePage) {
+  if (isHomePage || isWheelPage) {
     return <main>{children}</main>;
   }
 

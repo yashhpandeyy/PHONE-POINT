@@ -1,9 +1,7 @@
 // public/sw.js
 
-const CACHE_NAME = 'phone-point-cache-v1';
-const urlsToCache = [
-  '/',
-  '/globals.css',
+const CACHE_NAME = 'phone-point-cache-v2';
+const STATIC_ASSETS = [
   '/phonepoint.png',
   '/LOGO.png',
   '/manifest.json',
@@ -17,14 +15,14 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('[Service Worker] Caching assets');
-        return cache.addAll(urlsToCache);
+        console.log('[Service Worker] Caching static assets');
+        return cache.addAll(STATIC_ASSETS);
       })
   );
   self.skipWaiting();
 });
 
-// Activate Service Worker
+// Activate Service Worker - clear ALL old caches
 self.addEventListener('activate', (event) => {
   console.log('[Service Worker] Activating...');
   event.waitUntil(
@@ -42,11 +40,35 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch from Cache First
+// Network First strategy - always try network, fall back to cache
 self.addEventListener('fetch', (event) => {
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') return;
+
+  // For navigation requests (HTML pages) - always go to network
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match('/'))
+    );
+    return;
+  }
+
+  // For _next/ chunks - always go to network (never cache these)
+  if (event.request.url.includes('/_next/')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // For static assets - network first, fall back to cache
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
-    })
+    fetch(event.request)
+      .then((response) => {
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });

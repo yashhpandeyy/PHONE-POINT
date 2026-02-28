@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AppLayout } from '@/components/layout/app-layout';
 import ServiceWorkerRegister from '@/app/ServiceWorkerRegister';
 import { AuthProvider } from '@/context/auth-context';
+import { ThemeProvider } from '@/context/theme-context';
 
 export const metadata: Metadata = {
   title: 'Phone Point | Premium second hand Phones',
@@ -27,7 +28,7 @@ export default function RootLayout({
 }) {
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#050A28" />
@@ -45,12 +46,14 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('font-body bg-background antialiased')}>
-        <AuthProvider>
-          <AppLayout>{children}</AppLayout>
-          <Toaster />
-          {/* Register SW here */}
-          <ServiceWorkerRegister />
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <AppLayout>{children}</AppLayout>
+            <Toaster />
+            {/* Register SW here */}
+            <ServiceWorkerRegister />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

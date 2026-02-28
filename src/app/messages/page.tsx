@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/auth-context';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { databases, client, DATABASE_ID, COLLECTION_ID_CONVERSATIONS, COLLECTION_ID_MESSAGES } from '@/lib/appwrite';
 import { ID, Query, AppwriteException } from 'appwrite';
 import type { ConversationDocument, MessageDocument } from '@/lib/types';
@@ -587,6 +588,13 @@ const UserMessagesView = ({ user }: { user: NonNullable<ReturnType<typeof useAut
 // ==========================================
 export default function MessagesPage() {
     const { user, isLoading } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!isLoading && !user) {
+            router.replace('/login?redirect_to=/messages');
+        }
+    }, [user, isLoading, router]);
 
     if (isLoading) {
         return (
@@ -597,15 +605,7 @@ export default function MessagesPage() {
     }
 
     if (!user) {
-        return (
-            <div className="container py-12 flex flex-col items-center justify-center min-h-[60vh]">
-                <User className="h-16 w-16 text-muted-foreground" />
-                <p className="text-muted-foreground mt-4">Please log in to view your messages.</p>
-                <Button asChild className="mt-6">
-                    <Link href="/login?redirect_to=/messages">Login</Link>
-                </Button>
-            </div>
-        );
+        return null;
     }
 
     const isPrivilegedUser = (user.labels || []).includes('admin') || (user.labels || []).includes('developer');

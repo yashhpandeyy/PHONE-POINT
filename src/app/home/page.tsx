@@ -7,6 +7,7 @@ import { ArrowRight, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { ProductCard } from '@/components/product-card';
+import { CategoryTabs } from '@/components/category-tabs';
 import { AuthGuard } from '@/components/auth-guard';
 import { Card, CardContent } from '@/components/ui/card';
 import { databases } from '@/lib/appwrite';
@@ -77,6 +78,8 @@ export default function Home() {
             sizes="100vw"
           />
         </section>
+
+        <CategoryTabs />
 
         <section className="py-16 md:py-24 bg-card/50">
           <div className="container px-4 sm:px-6 lg:px-8">

@@ -22,12 +22,15 @@ import {
   CircleUser,
   Settings,
   ClipboardList,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { account } from "@/lib/appwrite";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/auth-context";
+import { useTheme } from "@/context/theme-context";
 import { useState } from "react";
 
 import { useUnreadMessages } from "@/hooks/use-unread-messages";
@@ -37,6 +40,7 @@ export function Header() {
   const router = useRouter();
   const { toast } = useToast();
   const hasUnread = useUnreadMessages();
+  const { theme, toggleTheme } = useTheme();
   const [headerSearch, setHeaderSearch] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -136,7 +140,7 @@ export function Header() {
           <Logo />
         </div>
 
-        <div className="flex items-center justify-end gap-2 sm:gap-4 w-1/5 md:w-auto">
+        <div className="flex items-center justify-end gap-2 sm:gap-4 w-auto">
           <form onSubmit={handleHeaderSearch} className="relative hidden sm:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -147,6 +151,10 @@ export function Header() {
               onChange={(e) => setHeaderSearch(e.target.value)}
             />
           </form>
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-foreground">
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            <span className="sr-only">Toggle theme</span>
+          </Button>
           <div className="flex items-center justify-end w-full">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

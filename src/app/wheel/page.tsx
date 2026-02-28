@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthGuard } from '@/components/auth-guard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, Gift, Sparkles, RefreshCcw, ArrowDown, Share2, Star, X, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import Image from 'next/image';
 
 const OFFERS = [
     { id: 1, text: "₹500 OFF", color: "#050A28", textColor: "#FFFFFF", icon: Gift },
@@ -31,79 +32,105 @@ export default function LuckyWheelPage() {
         setResult(null);
         setShowOverlay(false);
 
-        // Randomize rotation (at least 8 full spins + random offset for 6 segments)
-        // Offset calculation: (360 / 6) = 60 degrees per segment
+        // Randomize rotation (at least 10 full spins + random offset for 6 segments)
         const segmentAngle = 60;
         const randomSegment = Math.floor(Math.random() * 6);
         const targetAngle = 360 - (randomSegment * segmentAngle) - (segmentAngle / 2);
-        const totalRotation = rotation + (360 * 8) + targetAngle - (rotation % 360);
+        // Increase rotation significantly for a longer, more exciting spin
+        const totalRotation = rotation + (360 * 12) + targetAngle - (rotation % 360);
 
         setRotation(totalRotation);
 
-        // Animation duration is 5s
+        // Animation duration is 6s for the slow-fast-slow effect
         setTimeout(() => {
             setIsSpinning(false);
             const wonOffer = OFFERS[randomSegment];
             setResult(wonOffer);
 
-            // Delay the full screen overlay slightly for impact
             setTimeout(() => {
                 setShowOverlay(true);
             }, 300);
 
             localStorage.setItem('lucky_offer', wonOffer.text);
-        }, 5100);
+        }, 6100);
     };
 
     return (
         <AuthGuard>
-            <div className="container min-h-[90vh] py-8 md:py-16 flex flex-col items-center justify-center relative overflow-hidden bg-[#050A28]">
+            <div className="container min-h-screen py-8 md:py-12 flex flex-col items-center justify-start relative overflow-hidden bg-[#050A28]">
                 {/* Animated Background Lights */}
-                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/20 rounded-full blur-[120px] animate-pulse delay-1000" />
+                <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary/20 rounded-full blur-[150px] animate-pulse" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-accent/20 rounded-full blur-[150px] animate-pulse delay-1000" />
 
-                <div className="text-center mb-10 relative z-10">
-                    <Badge variant="outline" className="mb-4 border-primary/50 text-primary px-6 py-1.5 text-sm uppercase tracking-tighter bg-primary/5">
-                        Spin to Win Big
-                    </Badge>
-                    <h1 className="text-6xl md:text-8xl font-black italic text-white mb-2 tracking-tighter drop-shadow-2xl">
-                        LUCKY <span className="text-primary">WHEEL</span>
-                    </h1>
-                    <p className="text-muted-foreground text-lg max-w-sm mx-auto font-medium">
-                        Try your luck and win exclusive prizes for your next order!
-                    </p>
+                {/* Floating Stars/Particles */}
+                <div className="absolute inset-0 pointer-events-none">
+                    {[...Array(30)].map((_, i) => (
+                        <Star
+                            key={i}
+                            className="absolute text-primary/30 animate-pulse"
+                            style={{
+                                top: `${Math.random() * 100}%`,
+                                left: `${Math.random() * 100}%`,
+                                width: `${Math.random() * 20 + 10}px`,
+                                animationDelay: `${Math.random() * 5}s`
+                            }}
+                        />
+                    ))}
+                </div>
+
+                {/* Side-by-Side Header Layout */}
+                <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6 mb-12 relative z-10 px-4">
+                    <div className="text-center md:text-left flex-1">
+                        <Badge variant="outline" className="mb-4 border-primary/50 text-primary px-6 py-1.5 text-sm uppercase tracking-tighter bg-primary/5 shadow-[0_0_15px_rgba(246,189,104,0.2)]">
+                            LUCKY WHEEL LIVE
+                        </Badge>
+                        <h1 className="text-5xl md:text-7xl font-black italic text-white leading-none tracking-tighter drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
+                            SPIN <span className="text-primary italic">&</span> WIN
+                        </h1>
+                    </div>
+
+                    <div className="text-center md:text-right flex-1 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-8">
+                        <h2 className="text-3xl md:text-4xl font-black italic text-gold-shine leading-tight tracking-tighter mb-2">
+                            HAPPY 1 YEAR<br />ANNIVERSARY
+                        </h2>
+                        <p className="text-primary font-bold tracking-[0.2em] text-sm uppercase">PHONE POINT SPECIAL</p>
+                    </div>
                 </div>
 
                 {/* Wheel Container */}
-                <div className="relative w-[320px] h-[320px] md:w-[500px] md:h-[500px] mb-12 z-20 group">
+                <div className="relative w-[340px] h-[340px] md:w-[540px] md:h-[540px] mb-8 z-20">
                     {/* Outer Border with Glowing Dots */}
-                    <div className="absolute -inset-6 border-[12px] border-[#0a113a] rounded-full shadow-[0_0_60px_rgba(246,189,104,0.15)] flex items-center justify-center">
-                        {[...Array(12)].map((_, i) => (
+                    <div className="absolute -inset-8 border-[15px] border-[#0a113a] rounded-full shadow-[0_0_80px_rgba(246,189,104,0.25)] flex items-center justify-center">
+                        {[...Array(18)].map((_, i) => (
                             <div
                                 key={i}
-                                className="absolute w-3 h-3 bg-primary rounded-full shadow-[0_0_10px_#F6BD68]"
-                                style={{ transform: `rotate(${i * 30}deg) translateY(-165px) md:translateY(-255px)` }}
+                                className="absolute w-3.5 h-3.5 bg-primary rounded-full shadow-[0_0_15px_#F6BD68]"
+                                style={{ transform: `rotate(${i * 20}deg) translateY(-185px) md:translateY(-290px)` }}
                             />
                         ))}
                     </div>
 
                     {/* SVG Wheel Pointer */}
-                    <div className="absolute top-[-25px] left-1/2 -translate-x-1/2 z-40 drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
-                        <svg width="40" height="50" viewBox="0 0 40 50">
+                    <div className="absolute top-[-35px] left-1/2 -translate-x-1/2 z-40 drop-shadow-[0_8px_15px_rgba(0,0,0,0.6)]">
+                        <svg width="60" height="70" viewBox="0 0 40 50">
                             <path d="M20 50L0 0H40L20 50Z" fill="#F6BD68" />
                             <circle cx="20" cy="15" r="5" fill="#050A28" />
                         </svg>
                     </div>
 
-                    {/* SVG Wheel Implemention for Pixel Perfection */}
+                    {/* SVG Wheel - Redesigned with clickable center */}
                     <div
-                        className="w-full h-full transition-transform duration-[5000ms] cubic-bezier(0.2, 0, 0, 1)"
-                        style={{ transform: `rotate(${rotation}deg)` }}
+                        className="w-full h-full transition-transform duration-[6000ms]"
+                        style={{
+                            transform: `rotate(${rotation}deg)`,
+                            // Custom cubic-bezier for Slow Start -> High Speed -> Gradual Slowdown
+                            transitionTimingFunction: 'cubic-bezier(0.45, 0.05, 0, 1)'
+                        }}
                     >
                         <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-2xl">
                             <defs>
                                 <filter id="shadow">
-                                    <feDropShadow dx="0" dy="0" stdDeviation="0.5" floodOpacity="0.5" />
+                                    <feDropShadow dx="0" dy="0" stdDeviation="0.4" floodOpacity="0.8" />
                                 </filter>
                             </defs>
                             {OFFERS.map((offer, i) => {
@@ -111,7 +138,6 @@ export default function LuckyWheelPage() {
                                 const startAngle = i * angle;
                                 const endAngle = (i + 1) * angle;
 
-                                // SVG arc path calculation
                                 const x1 = 50 + 50 * Math.cos((Math.PI * (startAngle - 90)) / 180);
                                 const y1 = 50 + 50 * Math.sin((Math.PI * (startAngle - 90)) / 180);
                                 const x2 = 50 + 50 * Math.cos((Math.PI * (endAngle - 90)) / 180);
@@ -123,107 +149,146 @@ export default function LuckyWheelPage() {
                                             d={`M 50 50 L ${x1} ${y1} A 50 50 0 0 1 ${x2} ${y2} Z`}
                                             fill={offer.color}
                                             stroke="#050A28"
-                                            strokeWidth="0.5"
+                                            strokeWidth="0.8"
                                         />
                                         <g transform={`rotate(${startAngle + angle / 2}, 50, 50)`}>
                                             <text
                                                 x="50"
-                                                y="20"
+                                                y="22"
                                                 fill={offer.textColor}
-                                                fontSize="3.5"
+                                                fontSize="3.8"
                                                 fontWeight="900"
                                                 textAnchor="middle"
-                                                transform="rotate(0, 50, 20)"
+                                                transform="rotate(0, 50, 22)"
                                                 className="italic tracking-tighter"
                                                 style={{ filter: 'url(#shadow)' }}
                                             >
-                                                {offer.text}
+                                                {offer.text.split(' ')[0]}
+                                            </text>
+                                            <text
+                                                x="50"
+                                                y="27"
+                                                fill={offer.textColor}
+                                                fontSize="2.5"
+                                                fontWeight="700"
+                                                textAnchor="middle"
+                                                transform="rotate(0, 50, 27)"
+                                                className="tracking-tight opacity-90"
+                                            >
+                                                {offer.text.split(' ').slice(1).join(' ')}
                                             </text>
                                         </g>
                                     </g>
                                 );
                             })}
-                            {/* Inner Circle Decoration */}
-                            <circle cx="50" cy="50" r="8" fill="#050A28" stroke="#F6BD68" strokeWidth="1.5" />
-                            <text x="50" y="52" fill="#F6BD68" fontSize="4" fontWeight="bold" textAnchor="middle">★</text>
+                            {/* Inner Circle Border */}
+                            <circle cx="50" cy="50" r="14" fill="#050A28" stroke="#F6BD68" strokeWidth="1.5" />
                         </svg>
+                    </div>
+
+                    {/* Clickable Center Logo Overlay (Stays static) */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 md:w-40 md:h-40 z-50 flex items-center justify-center">
+                        <button
+                            onClick={spinWheel}
+                            disabled={isSpinning}
+                            className={cn(
+                                "relative w-full h-full rounded-full bg-[#050A28] border-4 border-primary p-4 shadow-[0_0_30px_rgba(246,189,104,0.4)] flex items-center justify-center transition-all duration-300",
+                                isSpinning ? "cursor-wait opacity-80" : "hover:scale-110 hover:shadow-[0_0_50px_rgba(246,189,104,0.6)] cursor-pointer active:scale-95 group"
+                            )}
+                        >
+                            <div className="relative w-full h-full">
+                                <Image
+                                    src="/LOGO.png"
+                                    alt="Phone Point Logo"
+                                    fill
+                                    className="object-contain p-1"
+                                />
+                            </div>
+                            {!isSpinning && (
+                                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-primary text-[#050A28] text-[10px] font-black px-3 py-1 rounded-full whitespace-nowrap animate-bounce shadow-lg">
+                                    CLICK TO SPIN
+                                </div>
+                            )}
+                        </button>
                     </div>
                 </div>
 
-                <div className="z-30">
-                    <Button
-                        onClick={spinWheel}
-                        disabled={isSpinning}
-                        size="lg"
-                        className={cn(
-                            "h-20 px-16 text-2xl font-black rounded-full shadow-[0_10px_30px_rgba(246,189,104,0.3)] transition-all duration-300 bg-primary hover:bg-white text-[#050A28] uppercase italic",
-                            isSpinning ? "opacity-50 scale-95" : "hover:scale-110 active:scale-95 translate-y-[-10px]"
-                        )}
-                    >
-                        {isSpinning ? (
-                            <RefreshCcw className="mr-3 h-8 w-8 animate-spin" />
-                        ) : (
-                            <Sparkles className="mr-3 h-8 w-8" />
-                        )}
-                        {isSpinning ? 'SPINNING...' : 'LUCKY SPIN'}
-                    </Button>
+                <div className="mt-8 text-center animate-pulse z-10 flex flex-col items-center gap-2">
+                    <p className="text-white/40 text-sm font-medium italic tracking-widest">TAP THE LOGO TO CELEBRATE OUR ANNIVERSARY</p>
+                    <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 text-primary fill-primary" />)}
+                    </div>
                 </div>
 
                 {/* Full Screen Winner Overlay */}
                 {showOverlay && result && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-overlay-in bg-black/80 backdrop-blur-xl">
-                        {/* Confetti Elements */}
-                        {[...Array(20)].map((_, i) => (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-overlay-in bg-black/90 backdrop-blur-2xl">
+                        {/* Improved Confetti Elements */}
+                        {[...Array(40)].map((_, i) => (
                             <div
                                 key={i}
-                                className="absolute w-2 h-2 bg-primary animate-bounce"
+                                className={cn(
+                                    "absolute w-2 h-2 rounded-sm",
+                                    i % 3 === 0 ? "bg-primary" : i % 3 === 1 ? "bg-accent" : "bg-white"
+                                )}
                                 style={{
                                     left: `${Math.random() * 100}%`,
                                     top: `${Math.random() * 100}%`,
-                                    animationDelay: `${Math.random() * 2}s`
+                                    animation: `confetti-pop ${Math.random() * 3 + 2}s ease-out infinite`,
+                                    animationDelay: `${Math.random() * 2}s`,
+                                    opacity: Math.random()
                                 }}
                             />
                         ))}
 
-                        <div className="relative max-w-lg w-full bg-card border-4 border-primary rounded-[40px] p-8 md:p-12 text-center animate-content-pop shadow-[0_0_100px_rgba(246,189,104,0.4)] overflow-hidden">
+                        <div className="relative max-w-xl w-full bg-[#0a113a] border-[6px] border-primary rounded-[50px] p-10 md:p-16 text-center animate-content-pop shadow-[0_0_150px_rgba(246,189,104,0.5)] overflow-hidden">
                             {/* Shine Effect */}
-                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 animate-pulse" />
+                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
 
-                            <div className="flex justify-center mb-6">
-                                <div className="p-5 rounded-full bg-primary/20 border-2 border-primary animate-winner">
-                                    <Trophy className="w-16 h-16 text-primary" />
+                            <div className="flex justify-center mb-8">
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-primary blur-3xl opacity-30 animate-pulse" />
+                                    <div className="relative p-8 rounded-full bg-primary/20 border-4 border-primary animate-winner shadow-[0_0_40px_rgba(246,189,104,0.4)]">
+                                        <Trophy className="w-20 h-20 text-primary" />
+                                    </div>
                                 </div>
                             </div>
 
-                            <h2 className="text-white text-2xl md:text-3xl font-bold uppercase tracking-widest mb-2">JACKPOT!</h2>
-                            <h1 className="text-7xl md:text-8xl font-black italic text-gold-shine mb-6 leading-none">
+                            <p className="text-primary text-xl font-black italic tracking-[0.3em] mb-4">CONGRATULATIONS!</p>
+
+                            <h1 className="text-7xl md:text-9xl font-black italic text-gold-shine mb-8 leading-none drop-shadow-2xl">
                                 {result.text}
                             </h1>
 
-                            <div className="space-y-4 mb-8">
-                                <p className="text-muted-foreground text-lg">
-                                    You've unlocked a special reward. Take a screenshot or show your email at the store to claim it!
+                            <div className="space-y-6 mb-10">
+                                <p className="text-white/80 text-xl font-medium leading-relaxed">
+                                    Thank you for being part of our <strong>1 Year Journey</strong>. This special anniversary gift is yours!
                                 </p>
-                                <div className="bg-white/5 border border-white/10 p-4 rounded-2xl flex items-center justify-center gap-2">
-                                    <CheckCircle2 className="w-5 h-5 text-green-400" />
-                                    <span className="text-white font-mono tracking-widest">EMAIL_VERIFIED_OFFER</span>
+                                <div className="bg-primary/10 border-2 border-primary/20 p-5 rounded-3xl group transition-all hover:bg-primary/15 relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                                    <p className="text-primary/60 text-xs uppercase font-black mb-1">Redemption Code</p>
+                                    <span className="text-white text-3xl font-black font-mono tracking-[0.2em]">ANNIVERSARY1YR</span>
                                 </div>
                             </div>
 
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <Button className="flex-1 h-14 text-lg font-bold rounded-2xl" onClick={() => setShowOverlay(false)}>
-                                    AWESOME!
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <Button
+                                    variant="ghost"
+                                    className="flex-1 h-16 text-xl font-black rounded-2xl bg-primary text-[#050A28] hover:bg-white hover:text-[#050A28] shadow-[0_10px_20px_rgba(0,0,0,0.3)]"
+                                    onClick={() => setShowOverlay(false)}
+                                >
+                                    CLAIM MY GIFT
                                 </Button>
-                                <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/20">
-                                    <Share2 className="w-5 h-5" />
+                                <Button variant="outline" className="h-16 px-8 rounded-2xl border-white/20 bg-white/5 hover:bg-white/10 text-white">
+                                    <Share2 className="w-6 h-6" />
                                 </Button>
                             </div>
 
                             <button
                                 onClick={() => setShowOverlay(false)}
-                                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 text-white/40 hover:text-white transition-colors"
+                                className="absolute top-8 right-8 p-3 rounded-full bg-white/5 text-white/40 hover:text-white transition-all hover:rotate-90"
                             >
-                                <X className="w-6 h-6" />
+                                <X className="w-8 h-8" />
                             </button>
                         </div>
                     </div>

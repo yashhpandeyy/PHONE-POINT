@@ -1,6 +1,0 @@
-# Allow Next.js assets
-/_next/static/*   /_next/static/:splat   200
-/_next/image/*    /_next/image/:splat    200
-
-# SPA fallback
-/*  /index.html   200

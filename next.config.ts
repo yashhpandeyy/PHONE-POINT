@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  generateBuildId: async () => {
+    // Generate a new build ID on every deploy to invalidate stale chunks
+    return Date.now().toString()
+  },
   images: {
     unoptimized: false,
     remotePatterns: [

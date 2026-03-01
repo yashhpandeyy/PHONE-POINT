@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     return Date.now().toString()
   },
   images: {
-    unoptimized: false,
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',

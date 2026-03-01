@@ -80,11 +80,11 @@ export default function Home() {
           >
             <CarouselContent className="ml-0">
               {[
-                '/Gemini_Generated_Image_3p6ugh3p6ugh3p6u (1).png',
-                '/Gemini_Generated_Image_3p6ugh3p6ugh3p6u.png',
-                '/Gemini_Generated_Image_e2vpoue2vpoue2vp.png',
-                '/Gemini_Generated_Image_jujamjjujamjjuja.png',
-                '/Gemini_Generated_Image_ynp1ibynp1ibynp1.png'
+                '/banner1.png',
+                '/banner2.png',
+                '/banner3.png',
+                '/banner4.png',
+                '/banner5.png'
               ].map((src, index) => (
                 <CarouselItem key={index} className="relative w-full aspect-[21/9] md:aspect-[3/1] max-h-[70vh] select-none pl-0">
                   <Image
@@ -94,6 +94,7 @@ export default function Home() {
                     className="object-cover md:object-contain"
                     priority={index === 0}
                     sizes="100vw"
+                    unoptimized={true}
                   />
                 </CarouselItem>
               ))}

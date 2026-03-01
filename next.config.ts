@@ -61,6 +61,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        // Force browsers to never cache the Next.js static data chunks
+        // This permanently fixes the Netlify ChunkLoadError 
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
+    ]
+  },
 };
 
 export default nextConfig;

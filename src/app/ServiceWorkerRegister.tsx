@@ -4,26 +4,13 @@ import { useEffect } from 'react';
 
 export default function ServiceWorkerRegister() {
   useEffect(() => {
-    // 1. Force update / register Service Worker
+    // 1. Force UNREGISTER all Service Workers to fix Netlify caching bugs
     if ('serviceWorker' in navigator) {
-      // Force update any existing registrations immediately
       navigator.serviceWorker.getRegistrations().then((registrations) => {
         for (const registration of registrations) {
-          registration.update().catch(console.error);
+          console.log('🗑️ Unregistering stale Service Worker to fix Netlify cache...', registration.scope);
+          registration.unregister();
         }
-      });
-
-      // Ensure the latest sw is registered
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/sw.js')
-          .then((registration) => {
-            console.log('✅ Service Worker registered with scope:', registration.scope);
-            registration.update(); // Forces update check
-          })
-          .catch((err) => {
-            console.log('❌ Service Worker registration failed:', err);
-          });
       });
     }
 

@@ -118,7 +118,7 @@ export function ProductCard({ phone, isAdmin, onDelete, priority }: ProductCardP
               <p className="text-xl font-black text-orange-500">₹{phone.price}</p>
             )}
           </div>
-          <Button variant="outline" className="border-2 border-pink-500 text-orange-500 bg-transparent hover:bg-pink-50 hover:text-orange-600 rounded-full px-6 font-bold shadow-sm">View</Button>
+          <Button variant="outline" className="border-2 border-slate-800 text-slate-800 dark:border-slate-200 dark:text-slate-200 bg-transparent hover:bg-slate-800 hover:text-white dark:hover:bg-slate-200 dark:hover:text-slate-800 rounded-full px-6 py-2 md:px-8 md:py-2.5 text-sm md:text-base font-bold shadow-sm">View</Button>
         </CardFooter>
       </Link>
     </Card>

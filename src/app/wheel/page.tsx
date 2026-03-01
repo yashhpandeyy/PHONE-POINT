@@ -209,7 +209,7 @@ export default function LuckyWheelPage() {
       return;
     }
 
-    // ── Streak logic: after 5 small wins, guarantee a cashback prize ──
+    // ── Streak logic: cashback ONLY after every 5 small wins ──
     const SMALL_IDS = ["airpods", "neckband", "watch"];
     const BIG_CASHBACK_IDS = ["cb500", "cb1000", "cb2000"];
     let smallStreak = 0;
@@ -217,18 +217,23 @@ export default function LuckyWheelPage() {
       smallStreak = parseInt(localStorage.getItem("wheel_small_streak") || "0", 10);
     } catch (e) { }
 
-    const forceGrand = smallStreak >= 5;
-
     let pickPool = eligibleIndices;
-    if (forceGrand) {
-      // Filter to only cashback prizes (not iPhone)
+    if (smallStreak >= 5) {
+      // Force cashback prize after 5 small wins
       const grandPool = eligibleIndices.filter((idx) =>
         BIG_CASHBACK_IDS.includes(SEGMENTS[idx].id)
       );
       if (grandPool.length > 0) {
         pickPool = grandPool;
       }
-      // If no cashback prizes are eligible, fall through to normal pool
+    } else {
+      // Block cashback prizes until streak reaches 5
+      const smallPool = eligibleIndices.filter(
+        (idx) => !BIG_CASHBACK_IDS.includes(SEGMENTS[idx].id)
+      );
+      if (smallPool.length > 0) {
+        pickPool = smallPool;
+      }
     }
 
     // Weighted random selection

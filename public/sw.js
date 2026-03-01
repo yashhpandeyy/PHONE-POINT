@@ -1,80 +1,33 @@
-// public/sw.js
+// public/sw.js - KILL SWITCH v4
+// This replaces the old Service Worker to instantly nuke caches and stop intercepting requests
 
-const CACHE_NAME = 'phone-point-cache-v3';
-const STATIC_ASSETS = [
-  '/phonepoint.png',
-  '/LOGO.png',
-  '/manifest.json',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-];
-
-// Install Service Worker
-self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Installing...');
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[Service Worker] Caching static assets');
-        return cache.addAll(STATIC_ASSETS);
-      })
-  );
-  self.skipWaiting();
+self.addEventListener('install', (e) => {
+  console.log('[Service Worker] Kill Switch Installing...');
+  self.skipWaiting(); // Instantly activate this new worker
 });
 
-// Activate Service Worker - clear ALL old caches
-self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activating...');
-  event.waitUntil(
+self.addEventListener('activate', (e) => {
+  console.log('[Service Worker] Kill Switch Activating...');
+  e.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log('[Service Worker] Clearing old cache:', cache);
-            return caches.delete(cache);
-          }
+          console.log('[Service Worker] Deleting old cache:', cache);
+          return caches.delete(cache);
         })
       );
     })
   );
-  self.clients.claim();
+  self.clients.claim(); // Instantly take control and kick out the old worker
 });
 
-// Network First strategy - always try network, fall back to cache
-self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') return;
+// We deliberately omit the 'fetch' event listener. 
+// This means the Service Worker will no longer intercept ANY network requests,
+// allowing the browser to fetch Next.js chunks directly from Netlify.
 
-  // For navigation requests (HTML pages) - always go to network
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match('/'))
-    );
-    return;
+// Optional: Unregister itself after taking control
+self.addEventListener('message', (event) => {
+  if (event.data === 'UNREGISTER') {
+    self.registration.unregister();
   }
-
-  // For _next/ chunks - always go to network (never cache these)
-  if (event.request.url.includes('/_next/')) {
-    event.respondWith(
-      fetch(event.request).catch((err) => {
-        console.warn('[Service Worker] Fetch failed for _next chunk:', err);
-        // We can't safely fallback for js chunks, just return a new empty response or let it fail
-        return new Response('', { status: 408, statusText: 'Request timeout' });
-      })
-    );
-    return;
-  }
-
-  // For static assets - network first, fall back to cache
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        const responseClone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseClone);
-        });
-        return response;
-      })
-      .catch(() => caches.match(event.request))
-  );
 });

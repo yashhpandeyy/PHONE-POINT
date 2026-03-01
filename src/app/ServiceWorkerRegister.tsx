@@ -4,13 +4,18 @@ import { useEffect } from 'react';
 
 export default function ServiceWorkerRegister() {
   useEffect(() => {
-    // 1. Force UNREGISTER all Service Workers to fix Netlify caching bugs
+    // 1. Register the Kill Switch SW so it downloads, activates, and clears caches
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (const registration of registrations) {
-          console.log('🗑️ Unregistering stale Service Worker to fix Netlify cache...', registration.scope);
-          registration.unregister();
+      navigator.serviceWorker.register('/sw.js').then((registration) => {
+        console.log('✅ Registered Kill Switch Service Worker');
+
+        registration.update(); // Force browser to check for new sw.js
+
+        if (registration.active) {
+          registration.active.postMessage('UNREGISTER');
         }
+      }).catch(err => {
+        console.error('Service Worker registration failed:', err);
       });
     }
 

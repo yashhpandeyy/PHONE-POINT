@@ -4,22 +4,24 @@ import { useEffect } from 'react';
 
 export default function ServiceWorkerRegister() {
   useEffect(() => {
-    // 1. Register the Kill Switch SW so it downloads, activates, and clears caches
+    // 1. Unregister ALL service workers to prevent stale cache issues
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').then((registration) => {
-        console.log('✅ Registered Kill Switch Service Worker');
-
-        registration.update(); // Force browser to check for new sw.js
-
-        if (registration.active) {
-          registration.active.postMessage('UNREGISTER');
-        }
-      }).catch(err => {
-        console.error('Service Worker registration failed:', err);
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((reg) => {
+          reg.unregister();
+          console.log('🗑️ Unregistered service worker:', reg.scope);
+        });
       });
+
+      // Also nuke all caches
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          names.forEach((name) => caches.delete(name));
+        });
+      }
     }
 
-    // 2. Global error boundary for ChunkLoadError
+    // 2. Global error handler for ChunkLoadError — cache-busting reload
     const handleChunkError = (event: ErrorEvent | PromiseRejectionEvent) => {
       const msg = ('message' in event) ? event.message : ('reason' in event) ? String(event.reason) : '';
       const errName = ('error' in event && event.error) ? event.error.name : '';
@@ -30,11 +32,19 @@ export default function ServiceWorkerRegister() {
         msg.includes('text/html') ||
         errName === 'ChunkLoadError'
       ) {
-        console.warn('⚠️ Detected stale JS chunk. Forcing full page reload...');
-        // Only reload once to prevent infinite loops if the CDN is really broken
-        if (!sessionStorage.getItem('chunk_reloaded')) {
-          sessionStorage.setItem('chunk_reloaded', 'true');
-          window.location.reload();
+        console.warn('⚠️ Stale chunk detected, doing cache-busting reload...');
+
+        // Track reload attempts to prevent infinite loop (max 3 tries)
+        const attempts = parseInt(sessionStorage.getItem('chunk_reload_attempts') || '0', 10);
+        if (attempts < 3) {
+          sessionStorage.setItem('chunk_reload_attempts', String(attempts + 1));
+          // Force cache-busting by navigating with a timestamp
+          const url = new URL(window.location.href);
+          url.searchParams.set('_cb', Date.now().toString());
+          window.location.replace(url.toString());
+        } else {
+          // After 3 failed attempts, show a manual refresh message
+          console.error('❌ Failed to load after 3 attempts. User must manually clear cache.');
         }
       }
     };
@@ -42,10 +52,10 @@ export default function ServiceWorkerRegister() {
     window.addEventListener('error', handleChunkError, true);
     window.addEventListener('unhandledrejection', handleChunkError, true);
 
-    // Clear the flag on successful load after a brief delay
+    // Clear reload counter on successful page load (after 5s = chunks loaded fine)
     const timer = setTimeout(() => {
-      sessionStorage.removeItem('chunk_reloaded');
-    }, 3000);
+      sessionStorage.removeItem('chunk_reload_attempts');
+    }, 5000);
 
     return () => {
       window.removeEventListener('error', handleChunkError, true);

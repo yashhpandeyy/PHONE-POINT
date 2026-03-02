@@ -10,34 +10,55 @@ export default function ErrorBoundary({
     reset: () => void
 }) {
     useEffect(() => {
-        // 🐛 DEBUG LOG: To verify if the new chunks are actually loading
-        console.log("🔥 [DEBUG] APP ERROR HANDLER LOADED 🔥", new Date().toISOString());
         console.error("Caught error in App:", error);
 
         if (
             error.name === 'ChunkLoadError' ||
             error.message?.includes("ChunkLoadError") ||
             error.message?.includes("Loading chunk") ||
-            error.message?.includes("text/html")
+            error.message?.includes("text/html") ||
+            error.message?.includes("MIME type")
         ) {
-            console.warn("⚠️ ChunkLoadError detected inside error.tsx, forcing hard reload...");
-            if (!sessionStorage.getItem('chunk_reloaded_from_error')) {
-                sessionStorage.setItem('chunk_reloaded_from_error', 'true');
+            console.warn("⚠️ ChunkLoadError detected, clearing caches and reloading...");
+
+            // Nuke all caches
+            if ('caches' in window) {
+                caches.keys().then((names) => {
+                    names.forEach((name) => caches.delete(name));
+                });
+            }
+
+            // Unregister all service workers
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then((regs) => {
+                    regs.forEach((r) => r.unregister());
+                });
+            }
+
+            const attempts = parseInt(sessionStorage.getItem('error_reload_attempts') || '0', 10);
+            if (attempts < 3) {
+                sessionStorage.setItem('error_reload_attempts', String(attempts + 1));
                 setTimeout(() => {
-                    sessionStorage.removeItem('chunk_reloaded_from_error');
-                }, 5000);
-                window.location.reload();
+                    window.location.href = window.location.pathname + '?_t=' + Date.now();
+                }, 500);
             }
         }
     }, [error]);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-8 font-sans">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8 font-sans">
             <h2 className="text-2xl font-bold mb-4">Updating application...</h2>
-            <p className="text-gray-500 mb-6 font-mono text-sm max-w-md mx-auto truncate">Error: {error.message}</p>
+            <p className="text-gray-500 mb-6 text-sm max-w-md mx-auto">
+                We&apos;re loading the latest version. This usually fixes itself.
+            </p>
             <button
-                onClick={() => window.location.reload()}
-                className="px-6 py-2 bg-black text-white rounded-full font-bold"
+                onClick={() => {
+                    if ('caches' in window) {
+                        caches.keys().then((names) => names.forEach((n) => caches.delete(n)));
+                    }
+                    window.location.href = window.location.pathname + '?_t=' + Date.now();
+                }}
+                className="px-6 py-3 bg-black text-white rounded-full font-bold text-lg"
             >
                 Reload Page
             </button>

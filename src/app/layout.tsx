@@ -21,6 +21,38 @@ export const viewport = {
   interactiveWidget: 'resizes-content',
 };
 
+// Inline script that runs BEFORE React — catches chunk errors when React itself fails to load
+const CHUNK_RECOVERY_SCRIPT = `
+(function(){
+  var MAX=3;
+  function nuke(){
+    if('caches' in window){caches.keys().then(function(n){n.forEach(function(c){caches.delete(c)})});}
+    if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(w){w.unregister()})});}
+  }
+  function recover(){
+    var a=parseInt(sessionStorage.getItem('_cr')||'0',10);
+    if(a<MAX){
+      sessionStorage.setItem('_cr',String(a+1));
+      nuke();
+      window.location.replace(window.location.pathname+'?_v='+Date.now());
+    }
+  }
+  window.addEventListener('error',function(e){
+    var m=(e.message||'')+(e.filename||'');
+    if(m.indexOf('ChunkLoadError')>-1||m.indexOf('Loading chunk')>-1||(e.filename&&e.filename.indexOf('/_next/')>-1&&m.indexOf('text/html')>-1)){
+      recover();
+    }
+  },true);
+  window.addEventListener('unhandledrejection',function(e){
+    var m=String(e.reason||'');
+    if(m.indexOf('ChunkLoadError')>-1||m.indexOf('Loading chunk')>-1){
+      recover();
+    }
+  },true);
+  setTimeout(function(){sessionStorage.removeItem('_cr');},8000);
+})();
+`;
+
 export default function RootLayout({
   children,
 }: {
@@ -30,6 +62,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* CRITICAL: Chunk error recovery runs BEFORE React hydrates */}
+        <script dangerouslySetInnerHTML={{ __html: CHUNK_RECOVERY_SCRIPT }} />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#050A28" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -50,7 +84,6 @@ export default function RootLayout({
           <AuthProvider>
             <AppLayout>{children}</AppLayout>
             <Toaster />
-            {/* Register SW here */}
             <ServiceWorkerRegister />
           </AuthProvider>
         </ThemeProvider>
